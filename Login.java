@@ -1,10 +1,15 @@
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -19,7 +24,8 @@ public class Login extends JFrame {
 	private JPasswordField passwordField;
 	private JButton loginButton;
 	private JButton registerButton;
-	
+	private String username, password;
+
 	/**
 	 * Launch the application.
 	 */
@@ -44,42 +50,42 @@ public class Login extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 500);
 		getContentPane().setLayout(null);
-		
+
 		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setFont(new Font("Times New Roman", Font.PLAIN, 25));
 		lblUsername.setBounds(180, 131, 115, 50);
 		getContentPane().add(lblUsername);
-		
+
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setFont(new Font("Times New Roman", Font.PLAIN, 25));
 		lblPassword.setBounds(180, 230, 125, 40);
 		getContentPane().add(lblPassword);
-		
+
 		textField = new JTextField();
 		textField.setBounds(345, 135, 250, 50);
 		getContentPane().add(textField);
 		textField.setColumns(10);
-		
+
 		passwordField = new JPasswordField();
 		passwordField.setColumns(10);
 		passwordField.setBounds(345, 220, 250, 50);
 		getContentPane().add(passwordField);
-		
+
 		loginButton = new JButton("Login");
 		loginButton.setBounds(180, 320, 150, 50);
 		getContentPane().add(loginButton);
-		
+
 		registerButton = new JButton("Register");
 		registerButton.setBounds(445, 320, 150, 50);
 		getContentPane().add(registerButton);
-		
+
 		JLabel lblNewLabel = new JLabel("Login");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		lblNewLabel.setBounds(310, 40, 136, 50);
 		getContentPane().add(lblNewLabel);
-		
-		registerButton.addMouseListener(new MouseAdapter(){
+
+		registerButton.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("register");
 				Register reg = new Register();
@@ -88,12 +94,55 @@ public class Login extends JFrame {
 				reg.setVisible(true);
 			}
 		});
-		
-		loginButton.addMouseListener(new MouseAdapter(){
+
+		loginButton.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("login clicked");
+				PreparedStatement stmt = null;
+				ResultSet rs = null;
+				Connection conn;
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+				} catch (ClassNotFoundException e1) {
+					System.err.print("ClassNotFoundException: ");
+				}
+				try {
+					String usernameStr = textField.getText();
+					char[] pass = passwordField.getPassword();
+					String passString = new String(pass);
+
+					String sql = "SELECT username, password FROM User WHERE username = '" + usernameStr + "'";
+					ConnectDB db = new ConnectDB();
+					conn = db.getConnection();
+
+					stmt = conn.prepareStatement(sql);
+					rs = stmt.executeQuery();
+					while (rs.next()) {
+						username = rs.getString("username");
+						password = rs.getString("password");
+					}
+					if (usernameStr.isEmpty() || passString.isEmpty()) {
+						JOptionPane.showMessageDialog(new JFrame(), "please fill out your username and password",
+								"error", JOptionPane.ERROR_MESSAGE);
+					}else {
+						if (usernameStr.equals(username)) {
+							System.out.println("user exist");
+							if (passString.equals(password)) {
+								JOptionPane.showMessageDialog(new JFrame(), "welcome");
+							} else {
+								JOptionPane.showMessageDialog(new JFrame(), "password mismatch, please try again",
+										"password error", JOptionPane.ERROR_MESSAGE);
+							}
+						} else {
+							JOptionPane.showMessageDialog(new JFrame(), "username does not exist",
+									"error", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					stmt.close();
+					conn.close();
+				} catch (SQLException ex) {
+					System.out.println("SQLException:" + ex.getMessage());
+				}
 			}
 		});
-		
 	}
 }
