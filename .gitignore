@@ -14,3 +14,7 @@
 /SuperChooseFunctionalityPage$4.class
 /SuperChooseFunctionalityPage$5.class
 /ConnectDB.class
+
+#classpath file and project file
+.classpath
+.project
