@@ -1,2 +1,36 @@
 #intellij idea folder
 .idea/
+/Login$1.class
+/Login$2.class
+/Login$3.class
+/Login.class
+/Register$1.class
+/Register$2.class
+/Register.class
+/SuperChooseFunctionalityPage.class
+/SuperChooseFunctionalityPage$1.class
+/SuperChooseFunctionalityPage$2.class
+/SuperChooseFunctionalityPage$3.class
+/SuperChooseFunctionalityPage$4.class
+/SuperChooseFunctionalityPage$5.class
+/ConnectDB.class
+
+#classpath file and project file
+.classpath
+.project
+
+/POI$1.class
+/POI.class
+
+/CityScientistAddNewDataPoint.class
+/CityScientistAddNewDataPoint$1.class
+/CityScientistAddNewDataPoint$2.class
+/DatePicker$1.class
+/DatePicker.class
+/CityScientistAddNewLocation$1.class
+/CityScientistAddNewLocation.class
+/AdminRejectOrAccept$1.class
+/AdminRejectOrAccept.class
+/AdminRejectOrAcceptOfficials$1.class
+/AdminRejectOrAcceptOfficials.class
+/CityScientistAddNewLocation$2.class
