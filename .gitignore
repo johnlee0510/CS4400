@@ -18,3 +18,7 @@
 #classpath file and project file
 .classpath
 .project
+
+/POI$1.class
+/POI.class
+
