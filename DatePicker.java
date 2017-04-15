@@ -1,40 +1,25 @@
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import 
 
-public class DatePicker extends JFrame {
+public class DatePicker extends JPanel {
 
-	private JPanel contentPane;
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("JXPicker Example");
+        JPanel panel = new JPanel();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DatePicker frame = new DatePicker();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setBounds(400, 400, 250, 100);
 
-	/**
-	 * Create the frame.
-	 */
-	public DatePicker() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-	}
+        JXDatePicker picker = new JXDatePicker();
+        picker.setDate(Calendar.getInstance().getTime());
+        picker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
 
+        panel.add(picker);
+        frame.getContentPane().add(panel);
+
+        frame.setVisible(true);
+    }
 }

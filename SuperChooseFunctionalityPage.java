@@ -33,7 +33,7 @@ public class SuperChooseFunctionalityPage extends JFrame {
 	 */
 	public SuperChooseFunctionalityPage() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 1090, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -44,7 +44,7 @@ public class SuperChooseFunctionalityPage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		PendingDataPointButton.setBounds(26, 63, 379, 24);
+		PendingDataPointButton.setBounds(304, 80, 379, 36);
 		contentPane.add(PendingDataPointButton);
 		
 		JButton pendingCityAccountsButton  = new JButton("Pending City Official Accounts");
@@ -52,7 +52,7 @@ public class SuperChooseFunctionalityPage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		pendingCityAccountsButton.setBounds(26, 93, 379, 24);
+		pendingCityAccountsButton.setBounds(288, 144, 416, 36);
 		contentPane.add(pendingCityAccountsButton);
 		
 		JButton filerPOIButton = new JButton("Filter/Search POI");
@@ -60,7 +60,7 @@ public class SuperChooseFunctionalityPage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		filerPOIButton.setBounds(26, 125, 379, 24);
+		filerPOIButton.setBounds(304, 208, 379, 36);
 		contentPane.add(filerPOIButton);
 		
 		JButton poiReportButton = new JButton("POI Report");
@@ -68,12 +68,16 @@ public class SuperChooseFunctionalityPage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		poiReportButton.setBounds(26, 160, 379, 24);
+		poiReportButton.setBounds(304, 272, 379, 36);
 		contentPane.add(poiReportButton);
 		
 		JLabel lblChooseFunctionality = new JLabel("Choose Functionality");
-		lblChooseFunctionality.setBounds(80, 12, 255, 33);
+		lblChooseFunctionality.setBounds(370, 15, 255, 33);
 		contentPane.add(lblChooseFunctionality);
+		
+		JButton btnAddANew = new JButton("Add a new Data Point");
+		btnAddANew.setBounds(342, 336, 316, 41);
+		contentPane.add(btnAddANew);
 	}
 }
 
