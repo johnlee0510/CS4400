@@ -2,7 +2,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -24,7 +23,9 @@ public class Login extends JFrame {
 	private JPasswordField passwordField;
 	private JButton loginButton;
 	private JButton registerButton;
-	private String username, password;
+	private String username, password, emailAddress;
+	private int isCityOfficial, isAdmin, isCityScientist;
+	static User currentUser;
 
 	/**
 	 * Launch the application.
@@ -110,7 +111,7 @@ public class Login extends JFrame {
 					char[] pass = passwordField.getPassword();
 					String passString = new String(pass);
 
-					String sql = "SELECT username, password FROM User WHERE username = '" + usernameStr + "'";
+					String sql = "SELECT * FROM User WHERE username = '" + usernameStr + "'";
 					ConnectDB db = new ConnectDB();
 					conn = db.getConnection();
 
@@ -119,22 +120,32 @@ public class Login extends JFrame {
 					while (rs.next()) {
 						username = rs.getString("username");
 						password = rs.getString("password");
+						emailAddress = rs.getString("emailAddress");
+						isCityOfficial = rs.getInt("isCityOfficial");
+						isAdmin = rs.getInt("isAdmin");
+						isCityScientist = rs.getInt("isCityScientist");
+
 					}
 					if (usernameStr.isEmpty() || passString.isEmpty()) {
 						JOptionPane.showMessageDialog(new JFrame(), "please fill out your username and password",
 								"error", JOptionPane.ERROR_MESSAGE);
-					}else {
+					} else {
 						if (usernameStr.equals(username)) {
-							System.out.println("user exist");
 							if (passString.equals(password)) {
-								JOptionPane.showMessageDialog(new JFrame(), "welcome");
+								JOptionPane.showMessageDialog(new JFrame(), "welcome back, " + username + "!");
+								currentUser = new User(username, emailAddress, password, isCityOfficial, isAdmin,
+										isCityScientist);
+								dispose();
+								SuperChooseFunctionalityPage page = new SuperChooseFunctionalityPage();
+								page.setVisible(true);
+								page.setResizable(false);
 							} else {
 								JOptionPane.showMessageDialog(new JFrame(), "password mismatch, please try again",
 										"password error", JOptionPane.ERROR_MESSAGE);
 							}
 						} else {
-							JOptionPane.showMessageDialog(new JFrame(), "username does not exist",
-									"error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(new JFrame(), "username does not exist", "error",
+									JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					stmt.close();

@@ -1,115 +1,161 @@
-import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
+
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
 import javax.swing.JTextField;
-import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField.AbstractFormatter;
 
 public class CityScientistAddNewDataPoint extends JFrame {
-	
-	private JPanel contentPane;
-	private JTextField textField;
-	private JTable table;
-	private JTextField textField_1;
 
 	/**
-	 * Launch the application.
+	 * 
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CityScientistAddNewDataPoint frame = new CityScientistAddNewDataPoint();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	private static final long serialVersionUID = 1L;	
+	private JPanel contentPane;
+	private JTextField textField;
+	private JLabel lblAddNewData;
+	private JLabel lblNewLabel;
+	private JLabel lblTimeAndData;
+	private JLabel lblDataType;
+	private JLabel lblDataValue;
+	private JButton btnBack;
+	private JButton btnSubmit;
+	private JComboBox<String> comboBox;
+	private JComboBox<String> comboBox_dataType;
+	
 	/**
 	 * Create the frame.
 	 */
 	public CityScientistAddNewDataPoint() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1091, 600);
+		setBounds(100, 100, 500, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
-		JPanel panel = new JPanel();
-		contentPane.add(panel, BorderLayout.CENTER);
-		panel.setLayout(null);
-		
-		JLabel lblAddANew = new JLabel("Add a new Data Point");
-		lblAddANew.setBounds(369, 28, 303, 33);
-		panel.add(lblAddANew);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(458, 89, 246, 39);
-		panel.add(comboBox);
-		
-		JLabel lblPoiLocation = new JLabel("POI location :");
-		lblPoiLocation.setBounds(249, 89, 183, 33);
-		panel.add(lblPoiLocation);
-		
-		JButton addLocation = new JButton("Add new location");
-		addLocation.setFont(addLocation.getFont().deriveFont(8));
-		addLocation.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		addLocation.setBounds(755, 88, 261, 41);
-		panel.add(addLocation);
-		
-		JLabel lblNewLabel = new JLabel("time and date of date reading :");
-		lblNewLabel.setBounds(42, 153, 376, 33);
-		panel.add(lblNewLabel);
-		
-		JLabel lblDataType = new JLabel("Data Type :");
-		lblDataType.setBounds(274, 214, 163, 33);
-		panel.add(lblDataType);
-		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setBounds(458, 211, 246, 39);
-		panel.add(comboBox_1);
+		contentPane.setLayout(null);
 		
 		textField = new JTextField();
-		textField.setBounds(458, 150, 246, 39);
-		panel.add(textField);
+		textField.setBounds(226, 165, 113, 22);
+		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		table = new JTable();
-		table.setBounds(533, 333, 1, 1);
-		panel.add(table);
+		JButton btnAddNewLocation = new JButton("Add");
+		btnAddNewLocation.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnAddNewLocation.setBounds(343, 74, 113, 22);
+		contentPane.add(btnAddNewLocation);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(458, 278, 246, 39);
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		lblAddNewData = new JLabel("Add new data point");
+		lblAddNewData.setFont(new Font("Times New Roman", Font.BOLD, 30));
+		lblAddNewData.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAddNewData.setBounds(63, 13, 319, 30);
+		contentPane.add(lblAddNewData);
 		
-		JLabel lblDataValue = new JLabel("Data value :");
-		lblDataValue.setBounds(268, 281, 150, 33);
-		panel.add(lblDataValue);
+		lblNewLabel = new JLabel("POI location name:");
+		lblNewLabel.setBounds(83, 75, 109, 22);
+		contentPane.add(lblNewLabel);
 		
-		JButton btnSubmit = new JButton("Submit");
-		btnSubmit.setBounds(583, 384, 203, 41);
-		panel.add(btnSubmit);
+		lblTimeAndData = new JLabel("Time and Data of data reading:");
+		lblTimeAndData.setBounds(12, 110, 180, 16);
+		contentPane.add(lblTimeAndData);
 		
-		JButton btnBackToMenu = new JButton("Back to menu");
-		btnBackToMenu.setBounds(261, 384, 203, 41);
-		panel.add(btnBackToMenu);
+		UtilDateModel model = new UtilDateModel();
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+		contentPane.add(datePicker);
+		
+		lblDataType = new JLabel("Data type:");
+		lblDataType.setBounds(133, 139, 59, 16);
+		contentPane.add(lblDataType);
+		
+		lblDataValue = new JLabel("Data value:");
+		lblDataValue.setBounds(127, 168, 65, 16);
+		contentPane.add(lblDataValue);
+		
+		btnBack = new JButton("Back");
+		btnBack.setBounds(83, 215, 97, 25);
+		contentPane.add(btnBack);
+		
+		btnSubmit = new JButton("Submit");
+		btnSubmit.setBounds(242, 215, 97, 25);
+		contentPane.add(btnSubmit);
+		
+		comboBox = new JComboBox<>();
+		comboBox.setBounds(226, 75, 109, 22);
+		contentPane.add(comboBox);
+		
+		comboBox_dataType = new JComboBox<>();
+		comboBox_dataType.addItem("Mold");
+		comboBox_dataType.addItem("Air Quality");
+		
+		comboBox_dataType.setBounds(226, 136, 113, 22);
+		contentPane.add(comboBox_dataType);
 		
 		
+		btnAddNewLocation.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+				CityScientistAddNewLocation loc = new CityScientistAddNewLocation();
+				loc.setVisible(true);
+				loc.setResizable(false);
+			}
+		});
+		
+		btnSubmit.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("Submit");
+			}
+		});
+		
+		btnBack.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+				SuperChooseFunctionalityPage page = new SuperChooseFunctionalityPage();
+				page.setVisible(true);
+				page.setResizable(false);
+			}
+		});
+	}
+	class DateLabelFormatter extends AbstractFormatter {
+
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private String datePattern = "yyyy-MM-dd";
+	    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+
+	    public Object stringToValue(String text) throws ParseException {
+	        return dateFormatter.parseObject(text);
+	    }
+
+	    public String valueToString(Object value) throws ParseException {
+	        if (value != null) {
+	            Calendar cal = (Calendar) value;
+	            return dateFormatter.format(cal.getTime());
+	        }
+
+	        return "";
+	    }
+
 	}
 }
