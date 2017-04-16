@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -91,5 +93,17 @@ public class Location extends JFrame {
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.setBounds(270, 204, 97, 25);
 		contentPane.add(btnSubmit);
+		
+		btnSubmit.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("Submit");
+			}
+		});
+		
+		btnBack.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				setVisible(false);
+			}
+		});
 	}
 }
