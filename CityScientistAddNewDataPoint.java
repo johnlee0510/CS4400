@@ -14,6 +14,8 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
+import com.toedter.calendar.JDateChooser;
+
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -81,7 +83,9 @@ public class CityScientistAddNewDataPoint extends JFrame {
 //		p.put("text.year", "Year");
 //		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
 //		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-//		contentPane.add(datePicker);
+		JDateChooser dateChooser = new JDateChooser();
+	    dateChooser.setBounds(226, 106, 200, 20);
+		contentPane.add(dateChooser);
 		
 		lblDataType = new JLabel("Data type:");
 		lblDataType.setBounds(133, 139, 59, 16);
