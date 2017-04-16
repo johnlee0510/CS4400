@@ -10,6 +10,8 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -123,6 +125,12 @@ public class AdminRejectOrAccept extends JFrame {
 		JButton btnAccept = new JButton("Accept");
 		btnAccept.setBounds(665, 398, 150, 41);
 		contentPane.add(btnAccept);
+		
+		btnReject.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
 	}
 
 }

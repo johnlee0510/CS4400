@@ -75,14 +75,7 @@ public class CityScientistAddNewDataPoint extends JFrame {
 		lblTimeAndData = new JLabel("Time and Data of data reading:");
 		lblTimeAndData.setBounds(12, 110, 180, 16);
 		contentPane.add(lblTimeAndData);
-		
-//		UtilDateModel model = new UtilDateModel();
-//		Properties p = new Properties();
-//		p.put("text.today", "Today");
-//		p.put("text.month", "Month");
-//		p.put("text.year", "Year");
-//		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-//		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+
 		JDateChooser dateChooser = new JDateChooser();
 	    dateChooser.setBounds(226, 106, 200, 20);
 		contentPane.add(dateChooser);
