@@ -16,6 +16,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import javax.swing.table.TableRowSorter;
+import javax.swing.table.TableModel;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdminRejectOrAccept extends JFrame {
 
@@ -95,6 +101,9 @@ public class AdminRejectOrAccept extends JFrame {
 					return columnTypes[columnIndex];
 				}
 			});
+            TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table_1.getModel());
+            table_1.setRowSorter(sorter);
+            
 			scrollPane.add(table_1);
 			scrollPane.setViewportView(table_1);
 			scrollPane.setBounds(12, 100, 858, 236);
