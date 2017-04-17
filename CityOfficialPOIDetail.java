@@ -1,6 +1,3 @@
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -9,31 +6,22 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.Box;
 import javax.swing.JTable;
 
 public class CityOfficialPOIDetail extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTable table;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CityOfficialPOIDetail frame = new CityOfficialPOIDetail();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -51,15 +39,15 @@ public class CityOfficialPOIDetail extends JFrame {
 		contentPane.add(lblPoi);
 		
 		JLabel lblType = new JLabel("Type :");
-		lblType.setBounds(83, 88, 115, 33);
+		lblType.setBounds(168, 88, 115, 33);
 		contentPane.add(lblType);
 		
 		JLabel lblDate = new JLabel("Data value : ");
-		lblDate.setBounds(83, 162, 165, 33);
+		lblDate.setBounds(168, 162, 115, 33);
 		contentPane.add(lblDate);
 		
 		JLabel lblNewLabel = new JLabel("Time and Date : ");
-		lblNewLabel.setBounds(83, 236, 200, 33);
+		lblNewLabel.setBounds(168, 235, 115, 33);
 		contentPane.add(lblNewLabel);
 		
 		JComboBox comboBox = new JComboBox();
@@ -93,11 +81,19 @@ public class CityOfficialPOIDetail extends JFrame {
 		contentPane.add(horizontalStrut);
 		
 		JButton btnBackToMenu = new JButton("Back to menu");
-		btnBackToMenu.setBounds(435, 680, 213, 41);
+		btnBackToMenu.setBounds(422, 680, 171, 41);
 		contentPane.add(btnBackToMenu);
 		
+		btnBackToMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				SuperChooseFunctionalityPage page = new SuperChooseFunctionalityPage();
+				page.setVisible(true);
+				page.setResizable(false);
+			}
+		});
 		JButton btnFlag = new JButton("Flag");
-		btnFlag.setBounds(766, 680, 171, 41);
+		btnFlag.setBounds(658, 680, 171, 41);
 		contentPane.add(btnFlag);
 		
 		table = new JTable();

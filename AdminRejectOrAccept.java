@@ -74,7 +74,11 @@ public class AdminRejectOrAccept extends JFrame {
 				data[i][4] = rs1.getTimestamp("dateTime");
 				i++;
 			}
-			
+			rs.close();
+			rs1.close();
+			stmt.close();
+			stmt1.close();
+			conn.close();
 			JScrollPane scrollPane = new JScrollPane();
 			
 			table_1 = new JTable();
@@ -132,5 +136,6 @@ public class AdminRejectOrAccept extends JFrame {
 			}
 		});
 	}
+	
 
 }

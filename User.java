@@ -21,6 +21,8 @@ public class User {
 			userType = "Admin";
 		} else if (isCityScientist == 1) {
 			userType = "City Scientist";
+		} else {
+			userType = "User";
 		}
 	}
 

@@ -96,6 +96,10 @@ public class SuperChooseFunctionalityPage extends JFrame {
 			panel.add(filerPOIButton);
 			filerPOIButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					dispose();
+					CityOfficialSearchFilterPOI page = new CityOfficialSearchFilterPOI();
+					page.setVisible(true);
+					page.setResizable(false);
 				}
 			});
 
@@ -103,6 +107,10 @@ public class SuperChooseFunctionalityPage extends JFrame {
 			panel.add(poiReportButton);
 			poiReportButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					dispose();
+					CityOfficialPOIDetail page = new CityOfficialPOIDetail();
+					page.setVisible(true);
+					page.setResizable(false);
 				}
 			});
 		} else if (Login.currentUser.getIsCityScientist() == 1) {

@@ -126,6 +126,9 @@ public class Login extends JFrame {
 						isCityScientist = rs.getInt("isCityScientist");
 
 					}
+					rs.close();
+					stmt.close();
+					conn.close();
 					if (usernameStr.isEmpty() || passString.isEmpty()) {
 						JOptionPane.showMessageDialog(new JFrame(), "please fill out your username and password",
 								"error", JOptionPane.ERROR_MESSAGE);
@@ -148,8 +151,6 @@ public class Login extends JFrame {
 									JOptionPane.ERROR_MESSAGE);
 						}
 					}
-					stmt.close();
-					conn.close();
 				} catch (SQLException ex) {
 					System.out.println("SQLException:" + ex.getMessage());
 				}

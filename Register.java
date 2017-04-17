@@ -15,11 +15,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.swing.JTextField;
-import java.awt.Choice;
 import java.awt.Button;
-import javax.swing.JButton;
 
 public class Register extends JFrame {
 
@@ -34,7 +31,10 @@ public class Register extends JFrame {
 	private JPasswordField confirm_pass;
 	private JLabel lblUserType;
 	private JTextField title;
-	String[] city,state;
+	String[] city, state;
+	String picked_city = "";
+	String picked_state = "";
+
 	/**
 	 * Create the frame.
 	 */
@@ -71,6 +71,9 @@ public class Register extends JFrame {
 				city[i] = dummyCity[i];
 				state[i] = dummyState[i];
 			}
+			rs.close();
+			stmt.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -132,8 +135,8 @@ public class Register extends JFrame {
 		lblUserType.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		lblUserType.setBounds(60, 403, 150, 40);
 		contentPane.add(lblUserType);
-		
-		String[] userType = {"City Officials","City Scientists"};
+
+		String[] userType = { "City Officials", "City Scientists" };
 		JComboBox<String> choice = new JComboBox<>(userType);
 		choice.setBounds(251, 415, 200, 30);
 		contentPane.add(choice);
@@ -166,16 +169,27 @@ public class Register extends JFrame {
 		JComboBox<String> city_choice = new JComboBox<>(city);
 		city_choice.setBounds(251, 498, 125, 22);
 		contentPane.add(city_choice);
-
+		city_choice.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				picked_city	 = city_choice.getItemAt(city_choice.getSelectedIndex());
+			}
+		});
+		
 		JComboBox<String> state_choice = new JComboBox<>(state);
 		state_choice.setBounds(251, 550, 125, 22);
 		contentPane.add(state_choice);
-
+		state_choice.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				picked_state = state_choice.getItemAt(state_choice.getSelectedIndex());
+			}
+		});
 		title = new JTextField();
 		title.setBounds(251, 599, 200, 25);
 		contentPane.add(title);
 		title.setColumns(10);
-		
+
 		Button btnCancel = new Button("Cancel");
 		btnCancel.setBounds(354, 687, 79, 24);
 		contentPane.add(btnCancel);
@@ -197,39 +211,122 @@ public class Register extends JFrame {
 
 		createButton.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				if (choice.getItemAt(choice.getSelectedIndex()).contains("City Officials")) {
-					
-				}
-				if (!username.getText().isEmpty() && !email.getText().isEmpty()
-						&& !password.getPassword().toString().isEmpty()
-						&& !confirm_pass.getPassword().toString().isEmpty()) {
-					System.out.println("test");
 
-					char[] pass = password.getPassword();
-					String passString = new String(pass);
-					char[] confPass = confirm_pass.getPassword();
-					String confPassString = new String(confPass);
+				int userCheck = 0;
+				try {
+					PreparedStatement stmt1, stmt2 = null;
+					ResultSet rs1 = null;
+					Connection conn;
+					ConnectDB db = new ConnectDB();
+					conn = db.getConnection();
+					String sql1 = "SELECT COUNT(*) FROM User WHERE username = '" + username.getText() + "'";
+					stmt1 = conn.prepareStatement(sql1);
+					rs1 = stmt1.executeQuery();
+					if (rs1.next()) {
+						userCheck = rs1.getInt(1);
+					}
 
-					if (passString.equals(confPassString)) {
-						
-						JOptionPane.showMessageDialog(new JFrame(),
-								"Account created, please log in with your new account");
-						Login frame = new Login();
-						frame.setVisible(true);
-						frame.setResizable(false);
-						dispose();
+					if (!username.getText().isEmpty() && !email.getText().isEmpty()
+							&& !password.getPassword().toString().isEmpty()
+							&& !confirm_pass.getPassword().toString().isEmpty()) {
+						System.out.println("all filled out");
+
+						char[] pass = password.getPassword();
+						String passString = new String(pass);
+						char[] confPass = confirm_pass.getPassword();
+						String confPassString = new String(confPass);
+
+						if (userCheck <= 0) {
+							System.out.println("not found existed user, proceed");
+							if (passString.equals(confPassString)) {
+								System.out.println("same password, proceed");
+								if (choice.getItemAt(choice.getSelectedIndex()).contains("City Officials")) {
+									if (!title.getText().isEmpty()) { 
+										String sql2 = "INSERT INTO CityOfficial(`username`, `emailAddress`,`password`,`city`, `state`, `title`,`approval`)"
+												+ " VALUES(?, ?, ?, ?, ?, ?, ?)";
+										try {
+											stmt2 = conn.prepareStatement(sql2);
+											stmt2.setString(1, username.getText());
+											stmt2.setString(2, email.getText());
+											stmt2.setString(3, passString);
+											stmt2.setString(4, picked_city);
+											stmt2.setString(5, picked_state);
+											stmt2.setString(6, title.getText());
+											stmt2.setInt(7, 0);
+											stmt2.executeUpdate();
+
+											JOptionPane.showMessageDialog(new JFrame(),
+													"create account requested, please wait for the Admin to approve your account");
+											Login frame = new Login();
+											frame.setVisible(true);
+											frame.setResizable(false);
+											dispose();
+
+										} catch (SQLException e2) {
+											String message = "city and state does not match!";
+											JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+													JOptionPane.ERROR_MESSAGE);
+											System.out.println("insert data error");
+										}
+									} else {
+										String message = "please type your title";
+										JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+												JOptionPane.ERROR_MESSAGE);
+										System.out.println("error");
+									}
+								} else {
+									String sql2 = "INSERT INTO User(`username`, `emailAddress`,`password`,`isCityOfficial`, `isAdmin`, `isCityScientist`)"
+											+ " VALUES(?, ?, ?, ?, ?, ?)";
+									try {
+										stmt2 = conn.prepareStatement(sql2);
+										stmt2.setString(1, username.getText());
+										stmt2.setString(2, email.getText());
+										stmt2.setString(3, passString);
+										stmt2.setInt(4, 0);
+										stmt2.setInt(5, 0);
+										stmt2.setInt(6, 1);
+										stmt2.executeUpdate();
+
+										JOptionPane.showMessageDialog(new JFrame(),
+												"Account created, please log in with your new account");
+										Login frame = new Login();
+										frame.setVisible(true);
+										frame.setResizable(false);
+										dispose();
+										
+										rs1.close();
+										stmt1.close();
+										conn.close();
+
+									} catch (SQLException e2) {
+										e2.printStackTrace();
+										System.out.println("insert data error");
+									}
+								}
+
+							} else {
+								String message = "password does not match!";
+								JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+										JOptionPane.ERROR_MESSAGE);
+								System.out.println("error");
+							}
+						} else {
+							String message = "username is already exist!";
+							JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+						}
 					} else {
-						String message = "password does not match!";
+						String message = "Please fill out all the requirements!";
 						JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
 						System.out.println("error");
 					}
-				} else {
-					String message = "Please fill out all the requirements!";
-					JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
-					System.out.println("error");
+					conn.close();
+					stmt1.close();
+					rs1.close();
+				} catch (SQLException ex) {
+					System.out.println("SQLException:" + ex.getMessage());
 				}
-
 			}
+
 		});
 
 	}

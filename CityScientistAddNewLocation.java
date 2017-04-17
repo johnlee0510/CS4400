@@ -62,7 +62,9 @@ public class CityScientistAddNewLocation extends JFrame {
 				city[i] = dummyCity[i];
 				state[i] = dummyState[i];
 			}
-
+			rs.close();
+			stmt.close();
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
