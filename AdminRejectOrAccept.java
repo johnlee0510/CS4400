@@ -16,12 +16,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
 import javax.swing.table.TableRowSorter;
 import javax.swing.table.TableModel;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AdminRejectOrAccept extends JFrame {
 
@@ -77,7 +73,8 @@ public class AdminRejectOrAccept extends JFrame {
 				data[i][1] = rs1.getString("locName");
 				data[i][2] = rs1.getString("dataType");
 				data[i][3] = rs1.getString("dataValue");
-				data[i][4] = rs1.getTimestamp("dateTime");
+				String dateTime = rs1.getTimestamp("dateTime").toString();
+				data[i][4] = dateTime;
 				i++;
 			}
 			rs.close();
@@ -86,7 +83,7 @@ public class AdminRejectOrAccept extends JFrame {
 			stmt1.close();
 			conn.close();
 			JScrollPane scrollPane = new JScrollPane();
-			
+
 			table_1 = new JTable();
 			table_1.setModel(new DefaultTableModel(data, title) {
 				/**
@@ -96,14 +93,14 @@ public class AdminRejectOrAccept extends JFrame {
 				@SuppressWarnings("rawtypes")
 				Class[] columnTypes = new Class[] { Boolean.class, String.class, String.class, String.class,
 						String.class };
-			
+
 				public Class<?> getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
 				}
 			});
-            TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table_1.getModel());
-            table_1.setRowSorter(sorter);
-            
+			TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table_1.getModel());
+			table_1.setRowSorter(sorter);
+
 			scrollPane.add(table_1);
 			scrollPane.setViewportView(table_1);
 			scrollPane.setBounds(12, 100, 858, 236);
@@ -138,13 +135,12 @@ public class AdminRejectOrAccept extends JFrame {
 		JButton btnAccept = new JButton("Accept");
 		btnAccept.setBounds(665, 398, 150, 41);
 		contentPane.add(btnAccept);
-		
-		btnReject.addMouseListener(new MouseAdapter(){
+
+		btnReject.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				
+
 			}
 		});
 	}
-	
 
 }

@@ -3,6 +3,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -27,6 +29,7 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 	private JTable table;
 	private DefaultTableModel model;
 	private int selectedRowIndex;
+
 	/**
 	 * Create the frame.
 	 */
@@ -37,14 +40,14 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel("Pending City Official Accounts");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(281, 30, 365, 33);
 		contentPane.add(lblNewLabel);
-		
-		String[] title = { "Select", "Username", "Email", "City", "State","Title" };
+
+		String[] title = { "Select", "Username", "Email", "City", "State", "Title" };
 
 		int x = 0;
 
@@ -84,7 +87,7 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 				i++;
 			}
 			JScrollPane scrollPane = new JScrollPane();
-			
+
 			table = new JTable();
 			table.setModel(new DefaultTableModel(data, title) {
 				/**
@@ -94,11 +97,13 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 				@SuppressWarnings("rawtypes")
 				Class[] columnTypes = new Class[] { Boolean.class, String.class, String.class, String.class,
 						String.class, String.class };
-			
+
 				public Class<?> getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
 				}
 			});
+			TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+			table.setRowSorter(sorter);
 			scrollPane.add(table);
 			scrollPane.setViewportView(table);
 			scrollPane.setBounds(12, 100, 958, 236);
@@ -110,11 +115,11 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 			e.printStackTrace();
 
 		}
-		
+
 		JButton btnBackToMenu = new JButton("Back to menu");
 		btnBackToMenu.setBounds(131, 388, 150, 41);
 		contentPane.add(btnBackToMenu);
-		
+
 		btnBackToMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -123,27 +128,28 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 				page.setResizable(false);
 			}
 		});
-		
+
 		JButton btnReject = new JButton("Reject");
 		btnReject.setBounds(417, 388, 150, 41);
 		contentPane.add(btnReject);
-		
+
 		JButton btnAccept = new JButton("Accept");
 		btnAccept.setBounds(702, 388, 150, 41);
 		contentPane.add(btnAccept);
-		
-		btnReject.addMouseListener(new MouseAdapter(){
+
+		btnReject.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				((DefaultTableModel)table.getModel()).removeRow(selectedRowIndex);
+				((DefaultTableModel) table.getModel()).removeRow(selectedRowIndex);
 			}
 		});
-		
-		btnAccept.addMouseListener(new MouseAdapter(){
+
+		btnAccept.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				((DefaultTableModel)table.getModel()).removeRow(selectedRowIndex);
+				((DefaultTableModel) table.getModel()).removeRow(selectedRowIndex);
 			}
 		});
 	}
+
 	public DefaultTableModel getmodel() {
 		return model;
 	}
