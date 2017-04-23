@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 import javax.swing.Box;
 import javax.swing.JTable;
 
@@ -163,7 +164,7 @@ public class CityOfficialPOIDetail extends JFrame {
 		contentPane.add(lblTo);
 		
 		try {
-			String sql = "SELECT * FROM DataPoint";
+			String sql = "SELECT * FROM DataPoint WHERE locName = '" + CityOfficialSearchFilterPOI.selectedLocation + "';";
 			ConnectDB db = new ConnectDB();
 			conn = db.getConnection();
 
