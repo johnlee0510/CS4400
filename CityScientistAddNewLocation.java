@@ -30,6 +30,7 @@ public class CityScientistAddNewLocation extends JFrame {
 	private String[] state;
 	private String picked_City;
 	private String picked_State; 
+	private JComboBox<String> comboBox_1;
 	/**
 	 * Create the frame.
 	 */
@@ -49,7 +50,7 @@ public class CityScientistAddNewLocation extends JFrame {
 
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
-			int num = 0;
+			int num = 1;
 			String[] dummyCity = new String[1000];
 			String[] dummyState = new String[1000];
 			while (rs.next()) {
@@ -59,6 +60,8 @@ public class CityScientistAddNewLocation extends JFrame {
 				dummyState[num] = state_str;
 				num++;
 			}
+			dummyCity[0] = "";
+			dummyState[0] = "";
 			city = new String[num];
 			state = new String[num];
 
@@ -117,7 +120,8 @@ public class CityScientistAddNewLocation extends JFrame {
 			}
 		});
 
-		JComboBox<String> comboBox_1 = new JComboBox<>(state);
+		comboBox_1 = new JComboBox<>(state);
+		comboBox_1.insertItemAt("", 0);
 		comboBox_1.setBounds(168, 126, 189, 22);
 		contentPane.add(comboBox_1);
 		comboBox_1.addItemListener(new ItemListener() {
