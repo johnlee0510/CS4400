@@ -1,9 +1,6 @@
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -14,8 +11,6 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField.AbstractFormatter;
-
 public class CityScientistAddNewDataPoint extends JFrame {
 
 	/**
@@ -71,6 +66,8 @@ public class CityScientistAddNewDataPoint extends JFrame {
 
 		JDateChooser dateChooser = new JDateChooser();
 	    dateChooser.setBounds(226, 106, 200, 20);
+	    dateChooser.setDateFormatString("yyyy-MM-dd");
+	    System.out.print(dateChooser.getDateFormatString());
 		contentPane.add(dateChooser);
 		
 		lblDataType = new JLabel("Data type:");
@@ -124,28 +121,5 @@ public class CityScientistAddNewDataPoint extends JFrame {
 				page.setResizable(false);
 			}
 		});
-	}
-	class DateLabelFormatter extends AbstractFormatter {
-
-	    /**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-		private String datePattern = "yyyy-MM-dd";
-	    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
-
-	    public Object stringToValue(String text) throws ParseException {
-	        return dateFormatter.parseObject(text);
-	    }
-
-	    public String valueToString(Object value) throws ParseException {
-	        if (value != null) {
-	            Calendar cal = (Calendar) value;
-	            return dateFormatter.format(cal.getTime());
-	        }
-
-	        return "";
-	    }
-
 	}
 }

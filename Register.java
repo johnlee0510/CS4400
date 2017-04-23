@@ -172,10 +172,10 @@ public class Register extends JFrame {
 		city_choice.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				picked_city	 = city_choice.getItemAt(city_choice.getSelectedIndex());
+				picked_city = city_choice.getItemAt(city_choice.getSelectedIndex());
 			}
 		});
-		
+
 		JComboBox<String> state_choice = new JComboBox<>(state);
 		state_choice.setBounds(251, 550, 125, 22);
 		contentPane.add(state_choice);
@@ -241,7 +241,7 @@ public class Register extends JFrame {
 							if (passString.equals(confPassString)) {
 								System.out.println("same password, proceed");
 								if (choice.getItemAt(choice.getSelectedIndex()).contains("City Officials")) {
-									if (!title.getText().isEmpty()) { 
+									if (!title.getText().isEmpty()) {
 										String sql2 = "INSERT INTO CityOfficial(`username`, `emailAddress`,`password`,`city`, `state`, `title`,`approval`)"
 												+ " VALUES(?, ?, ?, ?, ?, ?, ?)";
 										try {
@@ -293,10 +293,6 @@ public class Register extends JFrame {
 										frame.setVisible(true);
 										frame.setResizable(false);
 										dispose();
-										
-										rs1.close();
-										stmt1.close();
-										conn.close();
 
 									} catch (SQLException e2) {
 										e2.printStackTrace();
@@ -321,6 +317,7 @@ public class Register extends JFrame {
 					}
 					conn.close();
 					stmt1.close();
+					stmt2.close();
 					rs1.close();
 				} catch (SQLException ex) {
 					System.out.println("SQLException:" + ex.getMessage());
