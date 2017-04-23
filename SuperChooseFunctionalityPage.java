@@ -108,7 +108,7 @@ public class SuperChooseFunctionalityPage extends JFrame {
 			poiReportButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					dispose();
-					CityOfficialPOIDetail page = new CityOfficialPOIDetail();
+					CityOfficialPOIReport page = new CityOfficialPOIReport();
 					page.setVisible(true);
 					page.setResizable(false);
 				}
