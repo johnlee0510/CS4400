@@ -220,11 +220,11 @@ public class CityScientistAddNewDataPoint extends JFrame {
 							stmt1.close();
 							
 						} catch (SQLException e1) {
-							String message = "Error occured";
+							String message = "Please make sure that all required fields are filled out";
 							JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						String message = "Error occurred";
+						String message = "Please make sure that all required fields are filled out";
 						JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
 					}
 					conn.close();

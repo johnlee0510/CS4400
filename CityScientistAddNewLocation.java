@@ -175,6 +175,10 @@ public class CityScientistAddNewLocation extends JFrame {
 							stmt2.setString(6, null);
 							stmt2.executeUpdate();
 							
+							if (textField_locName.getText() == "" || picked_City == null || picked_State == null || textField_zip.getText() == "" ) {
+								throw new IllegalArgumentException("please make sure to fill all required fields");
+							}
+							
 							JOptionPane.showMessageDialog(new JFrame(),
 									"new location added");
 							CityScientistAddNewDataPoint frame = new CityScientistAddNewDataPoint();
@@ -185,8 +189,8 @@ public class CityScientistAddNewLocation extends JFrame {
 							stmt2.close();
 						
 						} catch (SQLException e2) {
-							String message = "Error occurred";
-							JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+							String message = "Please make sure all fields are filled in";
+							JOptionPane.showMessageDialog(new JFrame(), message, "Please make sure all fields are filled in", JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
 						String message = "please fill everything";
