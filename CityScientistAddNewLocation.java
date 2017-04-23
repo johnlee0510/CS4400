@@ -191,6 +191,8 @@ public class CityScientistAddNewLocation extends JFrame {
 					conn.close();
 				} catch (SQLException ex) {
 					System.out.println("SQLException: " + ex.getMessage());
+					String message = "State and City should match";
+					JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
