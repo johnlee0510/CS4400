@@ -174,12 +174,6 @@ public class CityScientistAddNewDataPoint extends JFrame {
 			}
 		});
 		
-		Date date = dateChooser.getDate();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		if (date != null) {
-			dateTime = sdf.format(date);
-		}
-		dateTime = dateTime + " " + timeEditor.getFormat().format(timeSpinner.getValue());
 		
 		btnAddNewLocation.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e) {
@@ -192,7 +186,13 @@ public class CityScientistAddNewDataPoint extends JFrame {
 		
 		btnSubmit.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e) {
-				
+				Date date = dateChooser.getDate();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				if (date != null) {
+					dateTime = sdf.format(date);
+				}
+				dateTime = dateTime + " " + timeEditor.getFormat().format(timeSpinner.getValue());
+				System.out.println(dateTime);
 				try {
 					PreparedStatement stmt1 = null;
 					ConnectDB db = new ConnectDB();
