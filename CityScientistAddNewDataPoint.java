@@ -4,12 +4,21 @@ import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -31,13 +40,54 @@ public class CityScientistAddNewDataPoint extends JFrame {
 	private JLabel lblDataValue;
 	private JButton btnBack;
 	private JButton btnSubmit;
-	private JComboBox<String> comboBox;
+	private JComboBox<String> comboBox_location;
 	private JComboBox<String> comboBox_dataType;
+	private Connection conn;
+	private PreparedStatement stmt = null;
+	private ResultSet rs = null;
+	private int num;
+	private String[] location;
 	
 	/**
 	 * Create the frame.
 	 */
 	public CityScientistAddNewDataPoint() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e1) {
+			System.err.print("ClassNotFoundException: ");
+		}
+		
+		try {
+			String sql = "SELECT locName FROM POI";
+			ConnectDB db = new ConnectDB();
+			conn = db.getConnection();
+		
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			num = 1;
+			String[] dummyLoc = new String[1000];
+		
+			while (rs.next()) {
+				String loc_str = rs.getString("locName");
+				dummyLoc[num] = loc_str;
+				num++;
+			}
+			dummyLoc[0] = "";
+			location = new String[num];
+			
+			for (int i = 0; i < num; i++) {
+				location[i] = dummyLoc[i];
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 300);
 		contentPane = new JPanel();
@@ -70,8 +120,15 @@ public class CityScientistAddNewDataPoint extends JFrame {
 		contentPane.add(lblTimeAndData);
 
 		JDateChooser dateChooser = new JDateChooser();
-	    dateChooser.setBounds(226, 106, 200, 20);
+	    dateChooser.setBounds(226, 106, 163, 20);
 		contentPane.add(dateChooser);
+		
+		JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
+		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
+		timeSpinner.setBounds(395, 110, 75, 16);
+		timeSpinner.setEditor(timeEditor);
+		timeSpinner.setValue(new Date());
+		contentPane.add(timeSpinner);
 		
 		lblDataType = new JLabel("Data type:");
 		lblDataType.setBounds(133, 139, 59, 16);
@@ -89,9 +146,9 @@ public class CityScientistAddNewDataPoint extends JFrame {
 		btnSubmit.setBounds(242, 215, 97, 25);
 		contentPane.add(btnSubmit);
 		
-		comboBox = new JComboBox<>();
-		comboBox.setBounds(226, 75, 109, 22);
-		contentPane.add(comboBox);
+		comboBox_location = new JComboBox<>(location);
+		comboBox_location.setBounds(226, 75, 109, 22);
+		contentPane.add(comboBox_location);
 		
 		comboBox_dataType = new JComboBox<>();
 		comboBox_dataType.addItem("Mold");
