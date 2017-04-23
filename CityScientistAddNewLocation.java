@@ -1,4 +1,6 @@
 import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
@@ -10,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -21,11 +24,12 @@ public class CityScientistAddNewLocation extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textField_locName;
+	private JTextField textField_zip;
 	private String[] city;
 	private String[] state;
-
+	private String picked_City;
+	private String picked_State; 
 	/**
 	 * Create the frame.
 	 */
@@ -65,9 +69,11 @@ public class CityScientistAddNewLocation extends JFrame {
 			rs.close();
 			stmt.close();
 			conn.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -97,23 +103,33 @@ public class CityScientistAddNewLocation extends JFrame {
 		lblZip.setBounds(103, 158, 53, 16);
 		contentPane.add(lblZip);
 
-		textField = new JTextField();
-		textField.setBounds(168, 68, 189, 22);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textField_locName = new JTextField();
+		textField_locName.setBounds(168, 68, 189, 22);
+		contentPane.add(textField_locName);
+		textField_locName.setColumns(10);
 
 		JComboBox<String> comboBox = new JComboBox<>(city);
 		comboBox.setBounds(168, 97, 189, 22);
 		contentPane.add(comboBox);
+		comboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				picked_City = comboBox.getItemAt(comboBox.getSelectedIndex());
+			}
+		});
 
 		JComboBox<String> comboBox_1 = new JComboBox<>(state);
 		comboBox_1.setBounds(168, 126, 189, 22);
 		contentPane.add(comboBox_1);
+		comboBox_1.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				picked_State = comboBox_1.getItemAt(comboBox_1.getSelectedIndex());
+			}
+		});
 
-		textField_1 = new JTextField();
-		textField_1.setBounds(168, 155, 189, 22);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		textField_zip = new JTextField();
+		textField_zip.setBounds(168, 155, 189, 22);
+		contentPane.add(textField_zip);
+		textField_zip.setColumns(10);
 
 		JButton btnBack = new JButton("Back");
 		btnBack.setBounds(126, 204, 97, 25);
@@ -130,5 +146,64 @@ public class CityScientistAddNewLocation extends JFrame {
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.setBounds(270, 204, 97, 25);
 		contentPane.add(btnSubmit);
+		
+		btnSubmit.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				try {
+					PreparedStatement stmt1, stmt2 = null;
+					ResultSet rs1 = null;
+					ConnectDB db = new ConnectDB();
+					Connection conn = db.getConnection();
+					String sql1 = "SELECT * FROM POI";
+					stmt1 = conn.prepareStatement(sql1);
+					rs1 = stmt1.executeQuery();
+					
+					if (textField_locName.getText() != null & textField_zip.getText() != null) {
+						String sql2 = "INSERT INTO POI(`locName`, `city`, `state`, `zipCode`, `flag`, `dateFlagged`)"
+								+ " VALUES(?, ?, ?, ?, ?, ?)";
+						try {
+							System.out.println("try in");
+							stmt2 = conn.prepareStatement(sql2);
+							System.out.println("try in 1");
+							stmt2.setString(1, textField_locName.getText());
+							System.out.println("try in2");
+							stmt2.setString(2, picked_City);
+							System.out.println("try in3");
+							stmt2.setString(3, picked_State);
+							System.out.println("try in4");
+							stmt2.setString(4, textField_zip.getText());
+							System.out.println("try in5");
+							stmt2.setInt(5, 0);
+							System.out.println("try in6");
+							stmt2.setString(6, null);
+							System.out.println("try in7");
+							stmt2.executeUpdate();
+							System.out.println("stmt2 int");
+							
+							JOptionPane.showMessageDialog(new JFrame(),
+									"new location added");
+							CityScientistAddNewDataPoint frame = new CityScientistAddNewDataPoint();
+							frame.setVisible(true);
+							frame.setResizable(false);
+							dispose();
+							
+							stmt2.close();
+						
+						} catch (SQLException e2) {
+							String message = "Error occurred";
+							JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+						}
+					} else {
+						String message = "please fill everything";
+						JOptionPane.showMessageDialog(new JFrame(), message);
+					}
+					rs1.close();
+					stmt1.close();
+					conn.close();
+				} catch (SQLException ex) {
+					System.out.println("SQLException: " + ex.getMessage());
+				}
+			}
+		});
 	}
 }
