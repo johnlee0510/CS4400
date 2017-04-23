@@ -150,10 +150,12 @@ public class CityScientistAddNewLocation extends JFrame {
 		btnSubmit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				try {
-					PreparedStatement stmt1, stmt2 = null;
-					ResultSet rs1 = null;
+					PreparedStatement stmt2 = null;
 					ConnectDB db = new ConnectDB();
 					Connection conn = db.getConnection();
+//					String sql1 = "SELECT * FROM POI";
+//					stmt1 = conn.prepareStatement(sql1);
+//					rs1 = stmt1.executeQuery();
 					
 					if (textField_locName.getText() != null & textField_zip.getText() != null) {
 						String sql2 = "INSERT INTO POI(`locName`, `city`, `State`, `zipCode`, `flag`, `dateFlagged`)"
@@ -185,7 +187,7 @@ public class CityScientistAddNewLocation extends JFrame {
 						String message = "please fill everything";
 						JOptionPane.showMessageDialog(new JFrame(), message);
 					}
-
+					conn.close();
 				} catch (SQLException ex) {
 					System.out.println("SQLException: " + ex.getMessage());
 				}
