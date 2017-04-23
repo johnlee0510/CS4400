@@ -199,13 +199,13 @@ public class CityScientistAddNewDataPoint extends JFrame {
 					Connection conn = db.getConnection();
 					
 					if (dataValue.getText() != null) {
-						String sql1 = "INSER INTO DataPoint(`locName`, `dateTime`, `dataValue`, `accepted`, `dataType`"
+						String sql1 = "INSERT INTO DataPoint(`locName`, `dateTime`, `dataValue`, `accepted`, `dataType`)"
 								+ "VALUES(?, ?, ?, ?, ?)";
 						try {
 							stmt1 = conn.prepareStatement(sql1);
 							stmt1.setString(1, locName);
 							stmt1.setString(2, dateTime);
-							stmt1.setString(3, lblDataValue.getText());
+							stmt1.setString(3, dataValue.getText());
 							stmt1.setInt(4, 0);
 							stmt1.setString(5, dataType);
 							stmt1.executeUpdate();
