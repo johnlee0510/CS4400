@@ -174,6 +174,12 @@ public class CityScientistAddNewDataPoint extends JFrame {
 			}
 		});
 		
+		Date date = dateChooser.getDate();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if (date != null) {
+			dateTime = sdf.format(date);
+		}
+		dateTime = dateTime + " " + timeEditor.getFormat().format(timeSpinner.getValue());
 		
 		btnAddNewLocation.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e) {
@@ -186,26 +192,20 @@ public class CityScientistAddNewDataPoint extends JFrame {
 		
 		btnSubmit.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e) {
-				Date date = dateChooser.getDate();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				if (date != null) {
-					dateTime = sdf.format(date);
-				}
-				dateTime = dateTime + " " + timeEditor.getFormat().format(timeSpinner.getValue());
-				System.out.println(dateTime);
+				
 				try {
 					PreparedStatement stmt1 = null;
 					ConnectDB db = new ConnectDB();
 					Connection conn = db.getConnection();
 					
 					if (dataValue.getText() != null) {
-						String sql1 = "INSER INTO DataPoint(`locName`, `dateTime`, `dataValue`, `accepted`, `dataType`"
+						String sql1 = "INSERT INTO DataPoint(`locName`, `dateTime`, `dataValue`, `accepted`, `dataType`)"
 								+ "VALUES(?, ?, ?, ?, ?)";
 						try {
 							stmt1 = conn.prepareStatement(sql1);
 							stmt1.setString(1, locName);
 							stmt1.setString(2, dateTime);
-							stmt1.setString(3, lblDataValue.getText());
+							stmt1.setString(3, dataValue.getText());
 							stmt1.setInt(4, 0);
 							stmt1.setString(5, dataType);
 							stmt1.executeUpdate();
