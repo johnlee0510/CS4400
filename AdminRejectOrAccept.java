@@ -57,11 +57,13 @@ public class AdminRejectOrAccept extends JFrame {
 			conn = db.getConnection();
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
-
+			
 			if (rs.next()) {
 				x = rs.getInt("num"); // number of data
 			}
-
+			
+			stmt.close();
+			rs.close();
 			Object[][] data = new Object[x][5];
 
 			String sql1 = "SELECT * FROM DataPoint";
@@ -77,9 +79,7 @@ public class AdminRejectOrAccept extends JFrame {
 				data[i][4] = dateTime;
 				i++;
 			}
-			rs.close();
 			rs1.close();
-			stmt.close();
 			stmt1.close();
 			conn.close();
 			JScrollPane scrollPane = new JScrollPane();
