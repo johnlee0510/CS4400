@@ -2,6 +2,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,6 +59,7 @@ public class CityOfficialSearchFilterPOI extends JFrame {
 	private String picked_state;
 	private int num;
 	private int checked = 0;
+	static String selectedLocation;
 
 	/**
 	 * Create the frame.
@@ -364,6 +367,20 @@ public class CityOfficialSearchFilterPOI extends JFrame {
 				}
 
 			}
+		});
+		
+		table.addMouseListener(new MouseAdapter() {
+			  public void mouseClicked(MouseEvent e) {
+			    if (e.getClickCount() == 2) {
+			    	selectedLocation = (String) table.getValueAt(table.getSelectedRow(), 0);
+			    	System.out.println(selectedLocation);
+			    	
+			    	CityOfficialPOIDetail frame = new CityOfficialPOIDetail();
+			    	frame.setVisible(true);
+			    	frame.setResizable(false);
+			    	dispose();
+			    }
+			  }
 		});
 
 		btnApplyFilter.addActionListener(new ActionListener() {
