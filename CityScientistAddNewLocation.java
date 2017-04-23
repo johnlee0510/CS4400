@@ -121,6 +121,7 @@ public class CityScientistAddNewLocation extends JFrame {
 		comboBox_1.setBounds(168, 126, 189, 22);
 		contentPane.add(comboBox_1);
 		comboBox_1.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				picked_State = comboBox_1.getItemAt(comboBox_1.getSelectedIndex());
 			}
