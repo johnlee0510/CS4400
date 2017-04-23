@@ -373,8 +373,6 @@ public class CityOfficialSearchFilterPOI extends JFrame {
 			  public void mouseClicked(MouseEvent e) {
 			    if (e.getClickCount() == 2) {
 			    	selectedLocation = (String) table.getValueAt(table.getSelectedRow(), 0);
-			    	System.out.println(selectedLocation);
-			    	
 			    	CityOfficialPOIDetail frame = new CityOfficialPOIDetail();
 			    	frame.setVisible(true);
 			    	frame.setResizable(false);
