@@ -154,31 +154,19 @@ public class CityScientistAddNewLocation extends JFrame {
 					ResultSet rs1 = null;
 					ConnectDB db = new ConnectDB();
 					Connection conn = db.getConnection();
-					String sql1 = "SELECT * FROM POI";
-					stmt1 = conn.prepareStatement(sql1);
-					rs1 = stmt1.executeQuery();
 					
 					if (textField_locName.getText() != null & textField_zip.getText() != null) {
-						String sql2 = "INSERT INTO POI(`locName`, `city`, `state`, `zipCode`, `flag`, `dateFlagged`)"
+						String sql2 = "INSERT INTO POI(`locName`, `city`, `State`, `zipCode`, `flag`, `dateFlagged`)"
 								+ " VALUES(?, ?, ?, ?, ?, ?)";
 						try {
-							System.out.println("try in");
 							stmt2 = conn.prepareStatement(sql2);
-							System.out.println("try in 1");
 							stmt2.setString(1, textField_locName.getText());
-							System.out.println("try in2");
 							stmt2.setString(2, picked_City);
-							System.out.println("try in3");
 							stmt2.setString(3, picked_State);
-							System.out.println("try in4");
 							stmt2.setString(4, textField_zip.getText());
-							System.out.println("try in5");
 							stmt2.setInt(5, 0);
-							System.out.println("try in6");
 							stmt2.setString(6, null);
-							System.out.println("try in7");
 							stmt2.executeUpdate();
-							System.out.println("stmt2 int");
 							
 							JOptionPane.showMessageDialog(new JFrame(),
 									"new location added");
@@ -197,9 +185,7 @@ public class CityScientistAddNewLocation extends JFrame {
 						String message = "please fill everything";
 						JOptionPane.showMessageDialog(new JFrame(), message);
 					}
-					rs1.close();
-					stmt1.close();
-					conn.close();
+
 				} catch (SQLException ex) {
 					System.out.println("SQLException: " + ex.getMessage());
 				}

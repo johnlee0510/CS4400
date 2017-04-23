@@ -33,7 +33,7 @@ public class User {
 	public String getEmailAddress() {
 		return emailAddress;
 	}
-
+ 
 
 	public String getPassword() {
 		return password;
