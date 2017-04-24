@@ -60,7 +60,7 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 			System.err.print("ClassNotFoundException: ");
 		}
 		try {
-			String sql = "SELECT COUNT(*) num FROM `CityOfficial`";
+			String sql = "SELECT COUNT(*) num FROM `CityOfficial` WHERE approval IS NULL";
 			ConnectDB db = new ConnectDB();
 			conn = db.getConnection();
 			stmt = conn.prepareStatement(sql);
@@ -73,7 +73,7 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 			stmt.close();
 			Object[][] data = new Object[x][6];
 
-			String sql1 = "SELECT approval, username, emailAddress, city, state, title FROM CityOfficial";
+			String sql1 = "SELECT approval, username, emailAddress, city, state, title FROM CityOfficial WHERE approval IS NULL";
 			stmt1 = conn.prepareStatement(sql1);
 			rs1 = stmt1.executeQuery();
 			int i = 0;
@@ -139,13 +139,51 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 
 		btnReject.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				((DefaultTableModel) table.getModel()).removeRow(selectedRowIndex);
+				Boolean checked = false; 
+				for (int i = 0; i <table.getRowCount(); i++) {
+					checked = (Boolean) table.getValueAt(i, 0);
+					if (checked) {
+						String value = (String) table.getValueAt(i, 1);
+						try {
+						String sql2 = "Update CityOfficial SET approval = 0 WHERE username = '" + value + "'";
+						ConnectDB db = new ConnectDB();
+						Connection conn = db.getConnection();
+						PreparedStatement statement = conn.prepareStatement(sql2);
+						statement.executeUpdate();
+						dispose();
+						SuperChooseFunctionalityPage page = new SuperChooseFunctionalityPage();
+						page.setVisible(true);
+						page.setResizable(false);
+						} catch (SQLException e2) {
+							e2.printStackTrace();
+						}
+					}
+				}
 			}
 		});
 
 		btnAccept.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				((DefaultTableModel) table.getModel()).removeRow(selectedRowIndex);
+				Boolean checked = false; 
+				for (int i = 0; i <table.getRowCount(); i++) {
+					checked = (Boolean) table.getValueAt(i, 0);
+					if (checked) {
+						String value = (String) table.getValueAt(i, 1);
+						try {
+						String sql2 = "Update CityOfficial SET approval = 1 WHERE username = '" + value + "'";
+						ConnectDB db = new ConnectDB();
+						Connection conn = db.getConnection();
+						PreparedStatement statement = conn.prepareStatement(sql2);
+						statement.executeUpdate();
+						dispose();
+						SuperChooseFunctionalityPage page = new SuperChooseFunctionalityPage();
+						page.setVisible(true);
+						page.setResizable(false);
+						} catch (SQLException e2) {
+							e2.printStackTrace();
+						}
+					}
+				}
 			}
 		});
 	}
