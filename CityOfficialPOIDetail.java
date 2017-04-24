@@ -239,7 +239,7 @@ public class CityOfficialPOIDetail extends JFrame {
 
 		try {
 			String sql = "SELECT * FROM DataPoint WHERE locName = '" + CityOfficialSearchFilterPOI.selectedLocation
-					+ "';";
+					+ "' AND accepted = 1;";
 			ConnectDB db = new ConnectDB();
 			conn = db.getConnection();
 
@@ -304,41 +304,45 @@ public class CityOfficialPOIDetail extends JFrame {
 				if (date != null) {
 					str_date = sdf.format(date);
 					dateTimes = str_date + " " + timeEditor.getFormat().format(timeSpinner.getValue());
+				} else {
+					dateTimes = "";
 				}
 				if (date1 != null) {
 					str_date1 = sdf.format(date1);
 					dateTimes1 = str_date1 + " " + timeEditor.getFormat().format(timeSpinner1.getValue());
+				} else {
+					dateTimes ="";
+				}
+				if (dataType2 == null) {
+					dataType2 = "Mold";
 				}
 				System.out.println(dateTimes); // testing
 				System.out.println(dateTimes1); // testing
 				System.out.println(str_date.compareTo(str_date1)); // testing
 
 				try {
-					String sql = "SELECT * FROM DataPoint WHERE accepted IS NULL";
+					String sql = "SELECT * FROM DataPoint WHERE accepted = 1";
 					if (str_date.compareTo(str_date1) > 1) {
 						String message = "Invalid date to date. Please enter the correct range";
 						JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
 					} else {
 						if (!dateTimes.equals("") && !dateTimes1.equals("")) {
-
-							if (Double.parseDouble(textField.getText()) < Double.parseDouble(textField_1.getText())) {
-								sql = "SELECT * FROM DataPoint WHERE accepted IS NULL AND dateTime BETWEEN '"
-										+ dateTimes + "' AND '" + dateTimes1 + "' AND locName = '"
-										+ CityOfficialSearchFilterPOI.selectedLocation + "' AND ;";
+							if (textField.getText().compareTo(textField_1.getText()) > 1) {
+								sql = "SELECT * FROM DataPoint WHERE dateTime BETWEEN '" + dateTimes + "' AND '"
+										+ dateTimes1 + "' AND locName = '"
+										+ CityOfficialSearchFilterPOI.selectedLocation + "' AND dataType = '"
+										+ dataType2 + "' AND accepted = 1 " + "AND dataValue BETWEEN '"
+										+ textField.getText() + "' AND '" + textField_1.getText() + "';";
 								System.out.println(sql);
 								System.out.println("works"); // testing
 
-							} else {
-								String message = "Invalid data value to data value. Please enter the correct range";
-								JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
-										JOptionPane.ERROR_MESSAGE);
-							}
-
+							} 
 						} else {
 							String message = "Please enter the range of data time";
 							JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
 						}
 					}
+					tmodel.setRowCount(num);
 					for (int i = 0; i < table.getRowCount(); i++) {
 						table.setValueAt("", i, 0);
 						table.setValueAt("", i, 1);
@@ -351,7 +355,7 @@ public class CityOfficialPOIDetail extends JFrame {
 					stmt = conn.prepareStatement(sql);
 					rs = stmt.executeQuery();
 					int num_filter = 0;
-
+					num = 0;
 					String[] dummyDataType = new String[1000];
 					String[] dummyDataValue = new String[1000];
 					String[] dummyLocName = new String[1000];
@@ -395,10 +399,72 @@ public class CityOfficialPOIDetail extends JFrame {
 
 			}
 		});
-
 		JButton btnResetFilter = new JButton("Reset filter");
 		btnResetFilter.setBounds(630, 309, 171, 41);
 		contentPane.add(btnResetFilter);
+		
+		btnResetFilter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < table.getRowCount(); i++) {
+					table.setValueAt("", i, 0);
+					table.setValueAt("", i, 1);
+					table.setValueAt("", i, 2);
+		
+				}
+				try {
+					String sql = "SELECT * FROM DataPoint WHERE locName = '" + CityOfficialSearchFilterPOI.selectedLocation
+							+ "' AND accepted = 1;";
+					ConnectDB db = new ConnectDB();
+					conn = db.getConnection();
+
+					stmt = conn.prepareStatement(sql);
+					rs = stmt.executeQuery();
+
+					String[] dummyDataType = new String[1000];
+					String[] dummyDataValue = new String[1000];
+					String[] dummyLocName = new String[1000];
+					String[] dummyDateTime = new String[1000];
+					num = 0;
+					while (rs.next()) {
+						String locName_str = rs.getString("locName");
+						String dateTime_str = rs.getString("dateTime");
+						String dataValue_str = rs.getString("dataValue");
+						String dataType_str = rs.getString("dataType");
+
+						dummyLocName[num] = locName_str;
+						dummyDataValue[num] = dataValue_str;
+						dummyDataType[num] = dataType_str;
+						dummyDateTime[num] = dateTime_str;
+						num++;
+					}
+					filterLocName = new String[num];
+					filterDataType = new String[num];
+					filterDataValue = new String[num];
+					filterDateTime = new String[num];
+
+					for (int i = 0; i < num; i++) {
+						filterLocName[i] = dummyLocName[i];
+						filterDataType[i] = dummyDataType[i];
+						filterDataValue[i] = dummyDataValue[i];
+						filterDateTime[i] = dummyDateTime[i];
+					}
+					tmodel.setRowCount(num);
+					for (int i = 0; i < num; i++) {
+						table.setValueAt(filterDataType[i], i, 0);
+						table.setValueAt(filterDataValue[i], i, 1);
+						table.setValueAt(filterDateTime[i], i, 2);
+					}
+					rs.close();
+					stmt.close();
+					conn.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+
+			}
+		});
+
+		
 
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		horizontalStrut.setBounds(0, 378, 1058, 2);
