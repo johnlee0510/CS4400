@@ -54,7 +54,7 @@ public class Register extends JFrame {
 
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
-			int num = 0;
+			int num = 1;
 			String[] dummyCity = new String[1000];
 			String[] dummyState = new String[1000];
 			while (rs.next()) {
@@ -64,6 +64,8 @@ public class Register extends JFrame {
 				dummyState[num] = state_str;
 				num++;
 			}
+			dummyCity[0] = "";
+			dummyState[0] = "";
 			city = new String[num];
 			state = new String[num];
 
@@ -193,6 +195,15 @@ public class Register extends JFrame {
 		Button btnCancel = new Button("Cancel");
 		btnCancel.setBounds(354, 687, 79, 24);
 		contentPane.add(btnCancel);
+		
+		btnCancel.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+				Login page = new Login();
+				page.setVisible(true);
+			}
+		});
+		
 		choice.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
