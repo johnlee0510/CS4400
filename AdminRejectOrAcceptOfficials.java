@@ -164,13 +164,31 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 
 		btnAccept.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				PreparedStatement stmt2;
 				Boolean checked = false; 
 				for (int i = 0; i <table.getRowCount(); i++) {
 					checked = (Boolean) table.getValueAt(i, 0);
 					if (checked) {
-						String value = (String) table.getValueAt(i, 1);
+						String username = (String) table.getValueAt(i, 1);
+						String emailAddress = (String) table.getValueAt(i, 2);
+						String password = (String) table.getValueAt(i, 3);
+						
+						String sql2 = "Update CityOfficial SET approval = 1 WHERE username = '" + username + "'";
+						String sql3 = "INSERT INTO User (`username`, `emailAddress`,`password`,`isCityOfficial`, `isAdmin`, `isCityScientist`)"
+								+ " VALUES(?, ?, ?, ?, ?, ?)";
 						try {
-						String sql2 = "Update CityOfficial SET approval = 1 WHERE username = '" + value + "'";
+							ConnectDB db1 = new ConnectDB();
+							Connection conn1 = db1.getConnection();
+							stmt2 = conn1.prepareStatement(sql3);
+							stmt2.setString(1, username);
+							stmt2.setString(2, emailAddress);
+							stmt2.setString(3, password);
+							stmt2.setInt(4, 1);
+							stmt2.setInt(5, 0);
+							stmt2.setInt(6, 0);
+							stmt2.executeUpdate();
+							stmt2.close();
+							
 						ConnectDB db = new ConnectDB();
 						Connection conn = db.getConnection();
 						PreparedStatement statement = conn.prepareStatement(sql2);
