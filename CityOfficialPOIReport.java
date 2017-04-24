@@ -158,7 +158,7 @@ public class CityOfficialPOIReport extends JFrame {
 			AQMax = new double[num];
 			numDP = new int[num];
 			flag = new String[num];
-
+			
 			for (int i = 0; i < num; i++) {
 				locName[i] = dummyLocName[i];
 				city[i] = dummyCity[i];

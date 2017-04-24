@@ -160,7 +160,7 @@ public class CityScientistAddNewDataPoint extends JFrame {
 				locName = comboBox_location.getItemAt(comboBox_location.getSelectedIndex());
 			}
 		});
-		
+	
 		comboBox_dataType = new JComboBox<>();
 		comboBox_dataType.addItem("Mold");
 		comboBox_dataType.addItem("Air Quality");

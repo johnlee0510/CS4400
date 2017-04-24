@@ -60,6 +60,7 @@ public class CityOfficialSearchFilterPOI extends JFrame {
 	private int num;
 	private int checked = 0;
 	static String selectedLocation;
+	static String selectedFlag;
 
 	/**
 	 * Create the frame.
@@ -373,6 +374,7 @@ public class CityOfficialSearchFilterPOI extends JFrame {
 			  public void mouseClicked(MouseEvent e) {
 			    if (e.getClickCount() == 2) {
 			    	selectedLocation = (String) table.getValueAt(table.getSelectedRow(), 0);
+			    	selectedFlag = (String)table.getValueAt(table.getSelectedRow(), 4);
 			    	CityOfficialPOIDetail frame = new CityOfficialPOIDetail();
 			    	frame.setVisible(true);
 			    	frame.setResizable(false);
@@ -706,7 +708,6 @@ public class CityOfficialSearchFilterPOI extends JFrame {
 						String[] dummyCity = new String[1000];
 						String[] dummyState = new String[1000];
 						String[] dummyZipCode = new String[1000];
-						// int[] dummyFlag = new int[1000];//original
 						String[] dummyFlag = new String[1000];
 
 						String[] dummyDateFlag = new String[1000];
@@ -718,7 +719,7 @@ public class CityOfficialSearchFilterPOI extends JFrame {
 							int flag_int = rs.getInt("flag");
 							String dateFlag_str = rs.getString("dateFlagged");
 							if (flag_int == 0) {
-								dummyFlag[num_filter] = null;
+								dummyFlag[num_filter] = "no";
 							} else {
 								dummyFlag[num_filter] = "yes";
 							}

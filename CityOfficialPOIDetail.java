@@ -11,6 +11,7 @@ import javax.swing.table.TableRowSorter;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
@@ -23,6 +24,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.Box;
@@ -47,7 +50,13 @@ public class CityOfficialPOIDetail extends JFrame {
 	private String[] dataType;
 	private String[] locName;
 	private String[] dataValue;
-	private String[] dataTime;
+	private String[] dateTime;
+	private String dateTimes;
+	private String dateTimes1;
+	private String[] filterLocName;
+	private String[] filterDataType;
+	private String[] filterDataValue;
+	private String[] filterDateTime;
 
 	/**
 	 * Create the frame.
@@ -86,13 +95,20 @@ public class CityOfficialPOIDetail extends JFrame {
 		dateChooser_1.setDateFormatString("yyyy-MM-dd");
 		dateChooser_1.setBounds(615, 248, 130, 20);
 		contentPane.add(dateChooser_1);
-		
-		JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
+
+		JSpinner timeSpinner = new JSpinner(new SpinnerDateModel());
 		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
 		timeSpinner.setBounds(446, 248, 75, 16);
 		timeSpinner.setEditor(timeEditor);
 		timeSpinner.setValue(new Date());
 		contentPane.add(timeSpinner);
+
+		JSpinner timeSpinner1 = new JSpinner(new SpinnerDateModel());
+		JSpinner.DateEditor timeEditor1 = new JSpinner.DateEditor(timeSpinner1, "HH:mm:ss");
+		timeSpinner1.setEditor(timeEditor1);
+		timeSpinner1.setValue(new Date());
+		timeSpinner1.setBounds(748, 248, 75, 16);
+		contentPane.add(timeSpinner1);
 
 		JButton btnBackToMenu = new JButton("Back to menu");
 		btnBackToMenu.setBounds(295, 691, 171, 41);
@@ -167,7 +183,7 @@ public class CityOfficialPOIDetail extends JFrame {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		JComboBox<String> type_comboBox = new JComboBox<String>();//dataType
+		JComboBox<String> type_comboBox = new JComboBox<String>();// dataType
 		type_comboBox.setBounds(422, 85, 147, 39);
 		contentPane.add(type_comboBox);
 
@@ -185,9 +201,10 @@ public class CityOfficialPOIDetail extends JFrame {
 		lblTo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTo.setBounds(560, 162, 33, 33);
 		contentPane.add(lblTo);
-		
+
 		try {
-			String sql = "SELECT * FROM DataPoint WHERE locName = '" + CityOfficialSearchFilterPOI.selectedLocation + "';";
+			String sql = "SELECT * FROM DataPoint WHERE locName = '" + CityOfficialSearchFilterPOI.selectedLocation
+					+ "';";
 			ConnectDB db = new ConnectDB();
 			conn = db.getConnection();
 
@@ -199,13 +216,13 @@ public class CityOfficialPOIDetail extends JFrame {
 			String[] dummyDataType = new String[1000];
 			String[] dummyDataValue = new String[1000];
 			String[] dummyTime = new String[1000];
-			
+
 			while (rs.next()) {
 				String locName_str = rs.getString("locName");
 				String dataType_str = rs.getString("dataType");
 				String dataValue_str = rs.getString("dataValue");
 				String dateTime_str = rs.getString("dateTime");
-				
+
 				dummyLocName[num] = locName_str;
 				dummyDataType[num] = dataType_str;
 				dummyDataValue[num] = dataValue_str;
@@ -214,20 +231,20 @@ public class CityOfficialPOIDetail extends JFrame {
 			}
 			locName = new String[num];
 			dataValue = new String[num];
-			dataTime = new String[num];
+			dateTime = new String[num];
 			dataType = new String[num];
-			
+
 			for (int i = 0; i < num; i++) {
 				locName[i] = dummyLocName[i];
 				dataValue[i] = dummyDataValue[i];
-				dataTime[i] = dummyTime[i];
+				dateTime[i] = dummyTime[i];
 				dataType[i] = dummyDataType[i];
 			}
 			tmodel.setRowCount(num);
 			for (int i = 0; i < num; i++) {
 				table.setValueAt(dataType[i], i, 0);
 				table.setValueAt(dataValue[i], i, 1);
-				table.setValueAt(dataTime[i], i, 2);
+				table.setValueAt(dateTime[i], i, 2);
 			}
 			rs.close();
 			stmt.close();
@@ -235,11 +252,113 @@ public class CityOfficialPOIDetail extends JFrame {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		JButton btnApplyFilter = new JButton("Apply filter");
 		btnApplyFilter.setBounds(295, 309, 171, 41);
 		contentPane.add(btnApplyFilter);
-		
+
+		btnApplyFilter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String str_date = "";
+				String str_date1 = "";
+				Date date = dateChooser.getDate();
+				Date date1 = dateChooser_1.getDate();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+				System.out.println(dateTime);
+				if (date != null) {
+					str_date = sdf.format(date);
+					dateTimes = str_date + " " + timeEditor.getFormat().format(timeSpinner.getValue());
+				}
+				if (date1 != null) {
+					str_date1 = sdf.format(date1);
+					dateTimes1 = str_date1 + " " + timeEditor.getFormat().format(timeSpinner1.getValue());
+				}
+				System.out.println(dateTimes); // testing
+				System.out.println(dateTimes1); // testing
+				System.out.println(str_date.compareTo(str_date1)); // testing
+
+				try {
+					String sql = "SELECT * FROM DataPoint WHERE accepted IS NULL";
+					if (str_date.compareTo(str_date1) > 1) {
+						String message = "Invalid date to date. Please enter the correct range";
+						JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+					} else {
+						if (!dateTimes.equals("") && !dateTimes1.equals("")) {
+							sql = "SELECT * FROM DataPoint WHERE accepted IS NULL AND dateTime BETWEEN '" + dateTimes +"' AND '" + dateTimes1 + "';";
+							System.out.println(sql);
+							if (Double.parseDouble(textField.getText()) < Double.parseDouble(textField_1.getText())) {
+
+								System.out.println("works"); // testing
+								
+							} else {
+								String message = "Invalid data value to data value. Please enter the correct range";
+								JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+										JOptionPane.ERROR_MESSAGE);
+							}
+
+						}else {
+							String message = "Please enter the range of data time";
+							JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					for (int i = 0; i < table.getRowCount(); i++) {
+						table.setValueAt("", i, 0);
+						table.setValueAt("", i, 1);
+						table.setValueAt("", i, 2);
+					}
+
+					ConnectDB db = new ConnectDB();
+					conn = db.getConnection();
+					System.out.println(sql + "end");
+					stmt = conn.prepareStatement(sql);
+					rs = stmt.executeQuery();
+					int num_filter = 0;
+
+					String[] dummyDataType = new String[1000];
+					String[] dummyDataValue = new String[1000];
+					String[] dummyLocName = new String[1000];
+					String[] dummyDateTime = new String[1000];
+
+					while (rs.next()) {
+						String locName_str = rs.getString("locName");
+						String dateTime_str = rs.getString("dateTime");
+						String dataValue_str = rs.getString("dataValue");
+						String dataType_str = rs.getString("dataType");
+
+						dummyLocName[num_filter] = locName_str;
+						dummyDataValue[num_filter] = dataValue_str;
+						dummyDataType[num_filter] = dataType_str;
+						dummyDateTime[num_filter] = dateTime_str;
+						num_filter++;
+					}
+					filterLocName = new String[num_filter];
+					filterDataType = new String[num_filter];
+					filterDataValue = new String[num_filter];
+					filterDateTime = new String[num_filter];
+
+					for (int i = 0; i < num_filter; i++) {
+						filterLocName[i] = dummyLocName[i];
+						filterDataType[i] = dummyDataType[i];
+						filterDataValue[i] = dummyDataValue[i];
+						filterDateTime[i] = dummyDateTime[i];
+					}
+					tmodel.setRowCount(num_filter);
+					for (int i = 0; i < num_filter; i++) {
+						table.setValueAt(filterDataType[i], i, 0);
+						table.setValueAt(filterDataValue[i], i, 1);
+						table.setValueAt(filterDateTime[i], i, 2);
+					}
+					rs.close();
+					stmt.close();
+					conn.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+
+			}
+		});
 		JButton btnResetFilter = new JButton("Reset filter");
 		btnResetFilter.setBounds(630, 309, 171, 41);
 		contentPane.add(btnResetFilter);
@@ -247,17 +366,11 @@ public class CityOfficialPOIDetail extends JFrame {
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		horizontalStrut.setBounds(0, 378, 1058, 2);
 		contentPane.add(horizontalStrut);
-		
+
 		JLabel label = new JLabel("to");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setBounds(560, 243, 33, 33);
 		contentPane.add(label);
-		
-		JSpinner timeSpinner1 = new JSpinner( new SpinnerDateModel() );
-		JSpinner.DateEditor timeEditor1 = new JSpinner.DateEditor(timeSpinner1, "HH:mm:ss");
-		timeSpinner1.setEditor(timeEditor1);
-		timeSpinner1.setValue(new Date());
-		timeSpinner1.setBounds(748, 248, 75, 16);
-		contentPane.add(timeSpinner1);
+
 	}
 }

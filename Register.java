@@ -327,6 +327,9 @@ public class Register extends JFrame {
 					stmt2.close();
 					rs1.close();
 				} catch (SQLException ex) {
+					
+				} catch (NullPointerException ex1) {
+					
 				}
 			}
 
