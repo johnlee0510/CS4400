@@ -1,3 +1,4 @@
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -11,8 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import java.awt.SystemColor;
 
 public class Login extends JFrame {
 	/**
@@ -53,11 +56,13 @@ public class Login extends JFrame {
 		getContentPane().setLayout(null);
 
 		JLabel lblUsername = new JLabel("Username");
+		lblUsername.setForeground(SystemColor.inactiveCaptionText);
 		lblUsername.setFont(new Font("Times New Roman", Font.PLAIN, 25));
 		lblUsername.setBounds(180, 131, 115, 50);
 		getContentPane().add(lblUsername);
 
 		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setForeground(SystemColor.inactiveCaptionText);
 		lblPassword.setFont(new Font("Times New Roman", Font.PLAIN, 25));
 		lblPassword.setBounds(180, 230, 125, 40);
 		getContentPane().add(lblPassword);
@@ -81,6 +86,7 @@ public class Login extends JFrame {
 		getContentPane().add(registerButton);
 
 		JLabel lblNewLabel = new JLabel("Login");
+		lblNewLabel.setForeground(SystemColor.inactiveCaptionText);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		lblNewLabel.setBounds(310, 40, 136, 50);
@@ -156,5 +162,12 @@ public class Login extends JFrame {
 				}
 			}
 		});
+
+		ImageIcon image = new ImageIcon("src/logo.png");
+
+		JLabel label = new JLabel(image);
+		label.setBounds(0, 0, 782, 455);
+		getContentPane().add(label);
+		
 	}
 }

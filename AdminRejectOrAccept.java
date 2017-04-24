@@ -28,7 +28,7 @@ import javax.swing.table.TableModel;
 public class AdminRejectOrAccept extends JFrame {
 
 	/**
-	 * 
+	 * this is a class where the Administrator rejects or accepts an existing data data point
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
