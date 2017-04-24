@@ -2,8 +2,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -18,9 +16,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.table.TableRowSorter;
 
 import javax.swing.table.TableModel;
@@ -176,7 +171,6 @@ public class AdminRejectOrAccept extends JFrame {
 			}
 		});
 
-		List<String[]> list = new ArrayList<>();
 		btnAccept.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				try {

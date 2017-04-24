@@ -28,7 +28,6 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private DefaultTableModel model;
-	private int selectedRowIndex;
 
 	/**
 	 * Create the frame.
@@ -170,22 +169,14 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 					checked = (Boolean) table.getValueAt(i, 0);
 					if (checked) {
 						String username = (String) table.getValueAt(i, 1);
-						String emailAddress = (String) table.getValueAt(i, 2);
-						String password = (String) table.getValueAt(i, 3);
 						
 						String sql2 = "Update CityOfficial SET approval = 1 WHERE username = '" + username + "'";
 						String sql3 = "INSERT INTO User (`username`, `emailAddress`,`password`,`isCityOfficial`, `isAdmin`, `isCityScientist`)"
-								+ " VALUES(?, ?, ?, ?, ?, ?)";
+								+ "SELECT `username`, `emailAddress`,`password`, '1', '0', '0' FROM CityOfficial WHERE username = '" + username +"';";
 						try {
 							ConnectDB db1 = new ConnectDB();
 							Connection conn1 = db1.getConnection();
 							stmt2 = conn1.prepareStatement(sql3);
-							stmt2.setString(1, username);
-							stmt2.setString(2, emailAddress);
-							stmt2.setString(3, password);
-							stmt2.setInt(4, 1);
-							stmt2.setInt(5, 0);
-							stmt2.setInt(6, 0);
 							stmt2.executeUpdate();
 							stmt2.close();
 							
