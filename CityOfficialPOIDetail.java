@@ -132,21 +132,37 @@ public class CityOfficialPOIDetail extends JFrame {
 
 		btnFlag.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				String flagged = CityOfficialSearchFilterPOI.selectedFlag;
 				String location = CityOfficialSearchFilterPOI.selectedLocation;
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-				try {
-					String newSql = "Update POI SET flag = 1 WHERE locName = '" + location + "'";
-					String dateSql = "Update POI SET dateFlagged = CURRENT_TIMESTAMP WHERE locName = '" + location
-							+ "'";
-					ConnectDB db = new ConnectDB();
-					conn = db.getConnection();
-					PreparedStatement statement = conn.prepareStatement(newSql);
-					PreparedStatement statement2 = conn.prepareStatement(dateSql);
-					statement.executeUpdate();
-					statement2.executeUpdate();
-				} catch (SQLException exception) {
-					exception.printStackTrace();
+				if (flagged.equals("no")) {
+					try {
+						String newSql = "Update POI SET flag = 1 WHERE locName = '" + location + "'";
+						String dateSql = "Update POI SET dateFlagged = CURRENT_TIMESTAMP WHERE locName = '" + location
+								+ "'";
+						ConnectDB db = new ConnectDB();
+						conn = db.getConnection();
+						PreparedStatement statement = conn.prepareStatement(newSql);
+						PreparedStatement statement2 = conn.prepareStatement(dateSql);
+						statement.executeUpdate();
+						statement2.executeUpdate();
+					} catch (SQLException exception) {
+						exception.printStackTrace();
+					}
+				} else {
+					try {
+						String newSql = "Update POI SET flag = 0 WHERE locName = '" + location + "'";
+						String dateSql = "Update POI SET dateFlagged = null WHERE locName = '" + location
+								+ "'";
+						ConnectDB db = new ConnectDB();
+						conn = db.getConnection();
+						PreparedStatement statement = conn.prepareStatement(newSql);
+						PreparedStatement statement2 = conn.prepareStatement(dateSql);
+						statement.executeUpdate();
+						statement2.executeUpdate();
+					} catch (SQLException exception) {
+						exception.printStackTrace();
+					}
 				}
 			}
 		});
