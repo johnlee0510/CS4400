@@ -40,7 +40,7 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		
 		JLabel lblNewLabel = new JLabel("Pending City Official Accounts");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -60,7 +60,7 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 			System.err.print("ClassNotFoundException: ");
 		}
 		try {
-			String sql = "SELECT COUNT(*) num FROM `CityOfficial`";
+			String sql = "SELECT COUNT(*) num FROM `CityOfficial` WHERE approval IS NULL";
 			ConnectDB db = new ConnectDB();
 			conn = db.getConnection();
 			stmt = conn.prepareStatement(sql);
@@ -73,7 +73,7 @@ public class AdminRejectOrAcceptOfficials extends JFrame {
 			stmt.close();
 			Object[][] data = new Object[x][6];
 
-			String sql1 = "SELECT approval, username, emailAddress, city, state, title FROM CityOfficial";
+			String sql1 = "SELECT approval, username, emailAddress, city, state, title FROM CityOfficial WHERE approval IS NULL";
 			stmt1 = conn.prepareStatement(sql1);
 			rs1 = stmt1.executeQuery();
 			int i = 0;

@@ -52,7 +52,7 @@ public class AdminRejectOrAccept extends JFrame {
 			System.err.print("ClassNotFoundException: ");
 		}
 		try {
-			String sql = "SELECT COUNT(*) num FROM `DataPoint`";
+			String sql = "SELECT COUNT(*) num FROM `DataPoint` WHERE accepted IS NULL";
 			ConnectDB db = new ConnectDB();
 			conn = db.getConnection();
 			stmt = conn.prepareStatement(sql);
@@ -66,7 +66,7 @@ public class AdminRejectOrAccept extends JFrame {
 			rs.close();
 			Object[][] data = new Object[x][5];
 
-			String sql1 = "SELECT * FROM DataPoint";
+			String sql1 = "SELECT * FROM DataPoint WHERE accepted IS NULL";
 			stmt1 = conn.prepareStatement(sql1);
 			rs1 = stmt1.executeQuery();
 			int i = 0;
