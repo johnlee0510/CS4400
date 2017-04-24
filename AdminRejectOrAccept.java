@@ -2,6 +2,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -16,7 +18,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.table.TableRowSorter;
+
 import javax.swing.table.TableModel;
 
 public class AdminRejectOrAccept extends JFrame {
@@ -57,11 +63,11 @@ public class AdminRejectOrAccept extends JFrame {
 			conn = db.getConnection();
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
-			
+
 			if (rs.next()) {
 				x = rs.getInt("num"); // number of data
 			}
-			
+
 			stmt.close();
 			rs.close();
 			Object[][] data = new Object[x][5];
@@ -138,7 +144,70 @@ public class AdminRejectOrAccept extends JFrame {
 
 		btnReject.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				try {
+					ConnectDB db = new ConnectDB();
+					Connection conn;
+					conn = db.getConnection();
+					PreparedStatement stmt;
+					Boolean checked = false;
+					for (int i = 0; i < table_1.getRowCount(); i++) {
+						checked = (Boolean) table_1.getValueAt(i, 0);
+						if (checked) {
+							// String[] values = new String[2];
+							String locName = (String) table_1.getValueAt(i, 1);
+							String date = (String) table_1.getValueAt(i, 4);
+							String sql2 = "Update DataPoint SET accepted = 0" + " WHERE locName = '" + locName
+									+ "' AND dateTime = '" + date + "';";
+							stmt = conn.prepareStatement(sql2);
+							stmt.executeUpdate();
+							stmt.close();
+							}
 
+					}
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				SuperChooseFunctionalityPage frame = new SuperChooseFunctionalityPage();
+				frame.setVisible(true);
+				frame.setResizable(false);
+				dispose();
+			}
+		});
+
+		List<String[]> list = new ArrayList<>();
+		btnAccept.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				try {
+					ConnectDB db = new ConnectDB();
+					Connection conn;
+					conn = db.getConnection();
+					PreparedStatement stmt;
+					Boolean checked = false;
+					for (int i = 0; i < table_1.getRowCount(); i++) {
+						checked = (Boolean) table_1.getValueAt(i, 0);
+						if (checked) {
+							// String[] values = new String[2];
+							String locName = (String) table_1.getValueAt(i, 1);
+							String date = (String) table_1.getValueAt(i, 4);
+							String sql2 = "Update DataPoint SET accepted = 1" + " WHERE locName = '" + locName
+									+ "' AND dateTime = '" + date + "';";
+							stmt = conn.prepareStatement(sql2);
+							stmt.executeUpdate();
+							stmt.close();
+							}
+
+					}
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				SuperChooseFunctionalityPage frame = new SuperChooseFunctionalityPage();
+				frame.setVisible(true);
+				frame.setResizable(false);
+				dispose();
 			}
 		});
 	}
