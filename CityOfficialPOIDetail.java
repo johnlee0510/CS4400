@@ -28,10 +28,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-<<<<<<< HEAD
 import java.text.ParseException;
-=======
->>>>>>> 7259ed55573d62f7c0d9c2b06c5e6b0aaac2d7fc
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -57,7 +54,6 @@ public class CityOfficialPOIDetail extends JFrame {
 	private String[] dataType;
 	private String[] locName;
 	private String[] dataValue;
-<<<<<<< HEAD
 	private String[] dateTime;
 	private String dateTimes;
 	private String dateTimes1;
@@ -65,14 +61,10 @@ public class CityOfficialPOIDetail extends JFrame {
 	private String[] filterDataType;
 	private String[] filterDataValue;
 	private String[] filterDateTime;
-=======
+
 	private String[] dataTime;
 	private String dataType2;
->>>>>>> 7259ed55573d62f7c0d9c2b06c5e6b0aaac2d7fc
 
-	/**
-	 * Create the frame.
-	 */
 	public CityOfficialPOIDetail() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1090, 821);
@@ -142,10 +134,11 @@ public class CityOfficialPOIDetail extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				String location = CityOfficialSearchFilterPOI.selectedLocation;
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				
+
 				try {
 					String newSql = "Update POI SET flag = 1 WHERE locName = '" + location + "'";
-					String dateSql = "Update POI SET dateFlagged = CURRENT_TIMESTAMP WHERE locName = '" + location + "'";
+					String dateSql = "Update POI SET dateFlagged = CURRENT_TIMESTAMP WHERE locName = '" + location
+							+ "'";
 					ConnectDB db = new ConnectDB();
 					conn = db.getConnection();
 					PreparedStatement statement = conn.prepareStatement(newSql);
@@ -217,11 +210,8 @@ public class CityOfficialPOIDetail extends JFrame {
 			e.printStackTrace();
 		}
 		JComboBox<String> type_comboBox = new JComboBox<String>();// dataType
-<<<<<<< HEAD
-=======
 		type_comboBox.addItem("Mold");
 		type_comboBox.addItem("Air Quality");
->>>>>>> 7259ed55573d62f7c0d9c2b06c5e6b0aaac2d7fc
 		type_comboBox.setBounds(422, 85, 147, 39);
 		contentPane.add(type_comboBox);
 
@@ -302,7 +292,6 @@ public class CityOfficialPOIDetail extends JFrame {
 		btnApplyFilter.setBounds(295, 309, 171, 41);
 		contentPane.add(btnApplyFilter);
 
-<<<<<<< HEAD
 		btnApplyFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String str_date = "";
@@ -331,22 +320,23 @@ public class CityOfficialPOIDetail extends JFrame {
 						JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
 					} else {
 						if (!dateTimes.equals("") && !dateTimes1.equals("")) {
-							sql = "SELECT * FROM DataPoint WHERE accepted IS NULL AND dateTime BETWEEN '" + dateTimes +"' AND '" + dateTimes1 + "';";
-							System.out.println(sql);
-							if (Double.parseDouble(textField.getText()) < Double.parseDouble(textField_1.getText())) {
 
+							if (Double.parseDouble(textField.getText()) < Double.parseDouble(textField_1.getText())) {
+								sql = "SELECT * FROM DataPoint WHERE accepted IS NULL AND dateTime BETWEEN '"
+										+ dateTimes + "' AND '" + dateTimes1 + "' AND locName = '"
+										+ CityOfficialSearchFilterPOI.selectedLocation + "' AND ;";
+								System.out.println(sql);
 								System.out.println("works"); // testing
-								
+
 							} else {
 								String message = "Invalid data value to data value. Please enter the correct range";
 								JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
 										JOptionPane.ERROR_MESSAGE);
 							}
 
-						}else {
+						} else {
 							String message = "Please enter the range of data time";
-							JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
-									JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					for (int i = 0; i < table.getRowCount(); i++) {
@@ -405,8 +395,7 @@ public class CityOfficialPOIDetail extends JFrame {
 
 			}
 		});
-=======
->>>>>>> 7259ed55573d62f7c0d9c2b06c5e6b0aaac2d7fc
+
 		JButton btnResetFilter = new JButton("Reset filter");
 		btnResetFilter.setBounds(630, 309, 171, 41);
 		contentPane.add(btnResetFilter);
@@ -419,15 +408,5 @@ public class CityOfficialPOIDetail extends JFrame {
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setBounds(560, 243, 33, 33);
 		contentPane.add(label);
-
-<<<<<<< HEAD
-=======
-		JSpinner timeSpinner1 = new JSpinner(new SpinnerDateModel());
-		JSpinner.DateEditor timeEditor1 = new JSpinner.DateEditor(timeSpinner1, "HH:mm:ss");
-		timeSpinner1.setEditor(timeEditor1);
-		timeSpinner1.setValue(new Date());
-		timeSpinner1.setBounds(748, 248, 75, 16);
-		contentPane.add(timeSpinner1);
->>>>>>> 7259ed55573d62f7c0d9c2b06c5e6b0aaac2d7fc
 	}
 }
