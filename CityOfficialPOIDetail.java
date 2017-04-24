@@ -6,6 +6,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import com.toedter.calendar.JDateChooser;
+
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -54,8 +57,9 @@ public class CityOfficialPOIDetail extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblPoi = new JLabel("POI Detail");
-		lblPoi.setBounds(429, 28, 177, 33);
+		JLabel lblPoi = new JLabel("POI Detail : " + CityOfficialSearchFilterPOI.selectedLocation);
+		lblPoi.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPoi.setBounds(381, 28, 349, 33);
 		contentPane.add(lblPoi);
 
 		JLabel lblType = new JLabel("Type :");
@@ -70,7 +74,16 @@ public class CityOfficialPOIDetail extends JFrame {
 		lblNewLabel.setBounds(168, 235, 115, 33);
 		contentPane.add(lblNewLabel);
 
-		
+		JDateChooser dateChooser = new JDateChooser();
+		dateChooser.setBounds(330, 248, 200, 20);
+		dateChooser.setDateFormatString("yyyy-MM-dd");
+		contentPane.add(dateChooser);
+
+		JDateChooser dateChooser_1 = new JDateChooser();
+		dateChooser_1.setDateFormatString("yyyy-MM-dd");
+		dateChooser_1.setBounds(616, 248, 200, 20);
+		contentPane.add(dateChooser_1);
+
 
 		JButton btnBackToMenu = new JButton("Back to menu");
 		btnBackToMenu.setBounds(295, 691, 171, 41);
@@ -79,7 +92,7 @@ public class CityOfficialPOIDetail extends JFrame {
 		btnBackToMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				SuperChooseFunctionalityPage page = new SuperChooseFunctionalityPage();
+				CityOfficialSearchFilterPOI page = new CityOfficialSearchFilterPOI();
 				page.setVisible(true);
 				page.setResizable(false);
 			}
@@ -145,7 +158,7 @@ public class CityOfficialPOIDetail extends JFrame {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		JComboBox<String> type_comboBox = new JComboBox<String>(dataType);
+		JComboBox<String> type_comboBox = new JComboBox<String>(); //dataType
 		type_comboBox.setBounds(422, 85, 147, 39);
 		contentPane.add(type_comboBox);
 
@@ -160,6 +173,7 @@ public class CityOfficialPOIDetail extends JFrame {
 		textField_1.setColumns(10);
 
 		JLabel lblTo = new JLabel("to");
+		lblTo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTo.setBounds(560, 162, 33, 33);
 		contentPane.add(lblTo);
 		
@@ -224,5 +238,10 @@ public class CityOfficialPOIDetail extends JFrame {
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		horizontalStrut.setBounds(0, 378, 1058, 2);
 		contentPane.add(horizontalStrut);
+		
+		JLabel label = new JLabel("to");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setBounds(560, 243, 33, 33);
+		contentPane.add(label);
 	}
 }
