@@ -198,20 +198,22 @@ public class CityScientistAddNewDataPoint extends JFrame {
 					ConnectDB db = new ConnectDB();
 					Connection conn = db.getConnection();
 					
+					if(dataType == null) {
+						dataType = "Mold";
+					}
 					if (dataValue.getText() != null) {
-						String sql1 = "INSERT INTO DataPoint(`locName`, `dateTime`, `dataValue`, `accepted`, `dataType`)"
-								+ "VALUES(?, ?, ?, ?, ?)";
+						String sql1 = "INSERT INTO DataPoint(`locName`, `dateTime`, `dataValue`, `dataType`)"
+								+ "VALUES(?, ?, ?, ?)";
 						try {
 							stmt1 = conn.prepareStatement(sql1);
 							stmt1.setString(1, locName);
 							stmt1.setString(2, dateTime);
 							stmt1.setString(3, dataValue.getText());
-							stmt1.setInt(4, 0);
-							stmt1.setString(5, dataType);
+							stmt1.setString(4, dataType);
 							stmt1.executeUpdate();
 							
 							JOptionPane.showMessageDialog(new JFrame(),
-									"new POI added");
+									"new data point is added");
 							SuperChooseFunctionalityPage SCFpage = new SuperChooseFunctionalityPage();
 							SCFpage.setVisible(true);
 							SCFpage.setResizable(false);

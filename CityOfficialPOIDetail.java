@@ -1,6 +1,7 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -12,6 +13,7 @@ import com.toedter.calendar.JDateChooser;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.Component;
@@ -21,10 +23,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.Date;
 
 import javax.swing.Box;
 import javax.swing.JTable;
+import javax.swing.SpinnerModel;
 
 public class CityOfficialPOIDetail extends JFrame {
 
@@ -75,15 +78,21 @@ public class CityOfficialPOIDetail extends JFrame {
 		contentPane.add(lblNewLabel);
 
 		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setBounds(330, 248, 200, 20);
+		dateChooser.setBounds(312, 248, 130, 20);
 		dateChooser.setDateFormatString("yyyy-MM-dd");
 		contentPane.add(dateChooser);
 
 		JDateChooser dateChooser_1 = new JDateChooser();
 		dateChooser_1.setDateFormatString("yyyy-MM-dd");
-		dateChooser_1.setBounds(616, 248, 200, 20);
+		dateChooser_1.setBounds(615, 248, 130, 20);
 		contentPane.add(dateChooser_1);
-
+		
+		JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
+		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
+		timeSpinner.setBounds(446, 248, 75, 16);
+		timeSpinner.setEditor(timeEditor);
+		timeSpinner.setValue(new Date());
+		contentPane.add(timeSpinner);
 
 		JButton btnBackToMenu = new JButton("Back to menu");
 		btnBackToMenu.setBounds(295, 691, 171, 41);
@@ -158,7 +167,7 @@ public class CityOfficialPOIDetail extends JFrame {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		JComboBox<String> type_comboBox = new JComboBox<String>(); //dataType
+		JComboBox<String> type_comboBox = new JComboBox<String>();//dataType
 		type_comboBox.setBounds(422, 85, 147, 39);
 		contentPane.add(type_comboBox);
 
@@ -230,7 +239,7 @@ public class CityOfficialPOIDetail extends JFrame {
 		JButton btnApplyFilter = new JButton("Apply filter");
 		btnApplyFilter.setBounds(295, 309, 171, 41);
 		contentPane.add(btnApplyFilter);
-
+		
 		JButton btnResetFilter = new JButton("Reset filter");
 		btnResetFilter.setBounds(630, 309, 171, 41);
 		contentPane.add(btnResetFilter);
@@ -243,5 +252,12 @@ public class CityOfficialPOIDetail extends JFrame {
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setBounds(560, 243, 33, 33);
 		contentPane.add(label);
+		
+		JSpinner timeSpinner1 = new JSpinner( new SpinnerDateModel() );
+		JSpinner.DateEditor timeEditor1 = new JSpinner.DateEditor(timeSpinner1, "HH:mm:ss");
+		timeSpinner1.setEditor(timeEditor1);
+		timeSpinner1.setValue(new Date());
+		timeSpinner1.setBounds(748, 248, 75, 16);
+		contentPane.add(timeSpinner1);
 	}
 }

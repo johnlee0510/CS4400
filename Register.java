@@ -266,13 +266,11 @@ public class Register extends JFrame {
 											String message = "city and state does not match!";
 											JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
 													JOptionPane.ERROR_MESSAGE);
-											System.out.println("insert data error");
 										}
 									} else {
 										String message = "please type your title";
 										JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
 												JOptionPane.ERROR_MESSAGE);
-										System.out.println("error");
 									}
 								} else {
 									String sql2 = "INSERT INTO User(`username`, `emailAddress`,`password`,`isCityOfficial`, `isAdmin`, `isCityScientist`)"
@@ -295,7 +293,6 @@ public class Register extends JFrame {
 										dispose();
 
 									} catch (SQLException e2) {
-										e2.printStackTrace();
 										System.out.println("insert data error");
 									}
 								}
@@ -313,14 +310,12 @@ public class Register extends JFrame {
 					} else {
 						String message = "Please fill out all the requirements!";
 						JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
-						System.out.println("error");
 					}
 					conn.close();
 					stmt1.close();
 					stmt2.close();
 					rs1.close();
 				} catch (SQLException ex) {
-					System.out.println("SQLException:" + ex.getMessage());
 				}
 			}
 
