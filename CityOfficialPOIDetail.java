@@ -140,25 +140,29 @@ public class CityOfficialPOIDetail extends JFrame {
 						String newSql = "Update POI SET flag = 1 WHERE locName = '" + location + "'";
 						String dateSql = "Update POI SET dateFlagged = CURRENT_TIMESTAMP WHERE locName = '" + location
 								+ "'";
+						System.out.println(newSql);
 						ConnectDB db = new ConnectDB();
 						conn = db.getConnection();
 						PreparedStatement statement = conn.prepareStatement(newSql);
 						PreparedStatement statement2 = conn.prepareStatement(dateSql);
 						statement.executeUpdate();
 						statement2.executeUpdate();
+						statement.close();
 					} catch (SQLException exception) {
 						exception.printStackTrace();
 					}
 				} else {
 					try {
 						String newSql = "Update POI SET flag = 0 WHERE locName = '" + location + "'";
-						String dateSql = "Update POI SET dateFlagged = null WHERE locName = '" + location
+						String dateSql = "Update POI SET dateFlagged = NULL WHERE locName = '" + location
 								+ "'";
+						System.out.println(newSql);
 						ConnectDB db = new ConnectDB();
 						conn = db.getConnection();
 						PreparedStatement statement = conn.prepareStatement(newSql);
 						PreparedStatement statement2 = conn.prepareStatement(dateSql);
 						statement.executeUpdate();
+						statement.close();
 						statement2.executeUpdate();
 					} catch (SQLException exception) {
 						exception.printStackTrace();
@@ -337,7 +341,11 @@ public class CityOfficialPOIDetail extends JFrame {
 				System.out.println(str_date.compareTo(str_date1)); // testing
 
 				try {
-					String sql = "SELECT * FROM DataPoint WHERE accepted = 1";
+					String sql = "SELECT * FROM DataPoint WHERE dateTime BETWEEN '" + dateTimes + "' AND '"
+							+ dateTimes1 + "' AND locName = '"
+							+ CityOfficialSearchFilterPOI.selectedLocation + "' AND dataType = '"
+							+ dataType2 + "' AND accepted = 1 " + "AND dataValue BETWEEN '"
+							+ textField.getText() + "' AND '" + textField_1.getText() + "';";
 					if (str_date.compareTo(str_date1) > 1) {
 						String message = "Invalid date to date. Please enter the correct range";
 						JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);

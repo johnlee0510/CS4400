@@ -245,7 +245,7 @@ public class CityOfficialSearchFilterPOI extends JFrame {
 				// String flag = rs.getString("flag");
 				String dateFlag_str = rs.getString("dateFlagged");
 				if (flag_int == 0) {
-					dummyFlag[num] = null;
+					dummyFlag[num] = "no";
 				} else {
 					dummyFlag[num] = "yes";
 				}
@@ -321,7 +321,7 @@ public class CityOfficialSearchFilterPOI extends JFrame {
 						String zipCode_str = rs.getString("zipCode");
 						int flag_int = rs.getInt("flag");
 						if (flag_int == 0) {
-							dummyFlag[num] = null;
+							dummyFlag[num] = "no";
 						} else {
 							dummyFlag[num] = "yes";
 						}
@@ -369,6 +369,7 @@ public class CityOfficialSearchFilterPOI extends JFrame {
 
 			}
 		});
+	
 		
 		table.addMouseListener(new MouseAdapter() {
 			  public void mouseClicked(MouseEvent e) {
@@ -718,6 +719,7 @@ public class CityOfficialSearchFilterPOI extends JFrame {
 							String zipCode_str = rs.getString("zipCode");
 							int flag_int = rs.getInt("flag");
 							String dateFlag_str = rs.getString("dateFlagged");
+							
 							if (flag_int == 0) {
 								dummyFlag[num_filter] = "no";
 							} else {
